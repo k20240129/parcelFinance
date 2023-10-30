@@ -1,0 +1,100 @@
+input:-webkit-autofill {
+
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+}
+.M_r_20{
+  margin-left: 20px;
+}
+.M_r_10{
+  margin-left: 10px;
+}
+.oprationp {
+	color: #409eff;
+
+	cursor: pointer;
+}
+.n-dialog__content{
+  padding-top: 10px;
+}
+// .n-form-item-feedback-wrapper {
+//   min-height: 10px !important;
+// }
+.KY-table {
+  .n-base-selection__border {
+    border: none !important;
+  }
+
+  .n-base-selection-label{
+    background-color: rgba($color: #000000, $alpha: 0);
+  }
+  .n-base-selection__state-border{
+    border: none !important;
+  }
+  .n-select{
+    >div{
+    //  width: %;
+    border: none !important;
+    background-color: rgba($color: #000000, $alpha: 0);
+    }
+  }
+
+}
+.lang{
+  .n-base-selection__border {
+    border: none !important;
+  }
+  .n-base-selection__border:focus-visible {
+    border: none !important;
+  }
+  .n-base-selection-label{
+    background-color: rgba($color: #000000, $alpha: 0);
+  }
+  .n-base-selection__state-border{
+    border: none !important;
+  }
+  .n-select{
+    >div{
+    //  width: %;
+    border: none !important;
+    background-color: rgba($color: #000000, $alpha: 0);
+    }
+  }
+}
+.dark{
+  .el-table__header{
+    .el-table__cell{
+      background-color: var(--el-table-header-bg-color) !important;
+    }
+  }
+}
+
+// 下划线移入动画
+.underline__bar {
+  position: absolute;
+  bottom: 1px;
+  width: 0;
+  min-height: 1px;
+  background-color: #000;
+  transition: all 0.3s ease-in-out;
+  left: 50%;
+  right: 50%;
+  transform: translate(12%, 0);
+}
+
+button {
+  position: relative;
+  border: none;
+  background-color: transparent;
+  color: #000;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+button:hover {
+  color: #fff;
+}
+
+button:hover .underline__bar {
+  width: 80%;
+}
