@@ -19,8 +19,8 @@
               </n-gi>
               <n-gi>
                 <n-form-item label="账单时间">
-                  <n-date-picker v-model:value="range1" update-value-on-close type="daterange" :actions="['clear']"
-                    clearable @change="getSearch" /></n-form-item>
+                  <n-date-picker v-model:value="range1" update-value-on-close type="date" clearable @change="getSearch"
+                    :actions="['clear', 'now']" /></n-form-item>
               </n-gi>
             </n-grid>
           </n-form>
@@ -40,16 +40,21 @@ const model = reactive<any>({
   billLadingNo: null,
   supplierName: null,
   beginSendTime: null as any,
-  endSendTime: null as any,
 });
 const getSearch = () => {
-  //实际发车时间
-  range1.value ? model.beginSendTime = moment(range1.value[0]).format("YYYY-MM-DD") : model.beginSendTime = null
-  range1.value ? model.endSendTime = moment(range1.value[1]).format("YYYY-MM-DD") : model.endSendTime = null
+  // if (range1.value.length === 2) {
+  //   const startDate = new Date(range1.value[0]);
+  //   const endDate = new Date(range1.value[1]);
+  //   startDate.setDate(startDate.getDate() - startDate.getDay() + 1);
+  //   endDate.setDate(endDate.getDate() - endDate.getDay() + 7);
+  //   range1.value = [startDate, endDate];
+  // }
+  range1.value ? model.beginSendTime = moment(range1.value).format("YYYY-MM-DD") : model.beginSendTime = null
   setTimeout(() => {
     emit('getSearch', model);
   }, 200);
 };
+
 </script>
 
 <style scoped></style>

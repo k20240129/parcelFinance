@@ -14,6 +14,7 @@ declare namespace RouterPage {
     | 'constant-page'
     | 'home'
     | 'home_LadingBillhome'
+    | 'home_edit'
     | 'home_message'
     | 'login'
     | 'not-found'
@@ -22,5 +23,5 @@ declare namespace RouterPage {
     | 'wrapUp_wrapList_detail';
 
   /** 最后一级路由(该级路有对应的vue文件) */
-  type LastDegreeRouteKey = Extract<RouteKey, '403' | '404' | '500' | 'appH5' | 'constant-page' | 'home_LadingBillhome' | 'home_message' | 'login' | 'not-found' | 'wrapUp_wrapList' | 'wrapUp_wrapList_detail'>
+  type LastDegreeRouteKey = Extract<RouteKey, '403' | '404' | '500' | 'appH5' | 'constant-page' | 'home_LadingBillhome' | 'home_edit' | 'home_message' | 'login' | 'not-found' | 'wrapUp_wrapList' | 'wrapUp_wrapList_detail'>
 }

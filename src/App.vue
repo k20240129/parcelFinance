@@ -1,15 +1,10 @@
 <template>
   <el-config-provider :locale="lang">
-    <n-config-provider
-      :theme="theme.naiveTheme"
-      :theme-overrides="theme.naiveThemeOverrides"
-      :locale="nactiveLang"
-      :date-locale="nactiveLangTime"
-      class="h-full"
-    >
+    <n-config-provider :theme="theme.naiveTheme" :theme-overrides="theme.naiveThemeOverrides" :locale="nactiveLang"
+      :date-locale="nactiveLangTime" class="h-full">
       <naive-provider>
         <n-message-provider>
-          <router-view />
+          <router-view :key="$route.fullPath" />
         </n-message-provider>
       </naive-provider>
     </n-config-provider>

@@ -22,6 +22,18 @@ export default [
 				},
 			},
 			{
+				name: "home_edit",
+				path: "/home/edit",
+				component: "self",
+				meta: {
+					title: "对账详情",
+					localIcon: "circum_pause-1",
+					requiresAuth: true,
+					hide: true,
+					keepAlive: false,
+				},
+			},
+			{
 				name: "home_message",
 				path: "/home/message",
 				component: "self",

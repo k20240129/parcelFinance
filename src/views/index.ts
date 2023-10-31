@@ -9,6 +9,7 @@ export const views: Record<RouterPage.LastDegreeRouteKey, RouteComponent | (() =
   login: () => import('./_builtin/login/index.vue'),
   'not-found': () => import('./_builtin/not-found/index.vue'),
   home_LadingBillhome: () => import('./home/LadingBillhome/index.vue'),
+  home_edit: () => import('./home/edit/index.vue'),
   home_message: () => import('./home/message/index.vue'),
   wrapUp_wrapList_detail: () => import('./wrapUp/wrapList/detail/index.vue'),
   wrapUp_wrapList: () => import('./wrapUp/wrapList/index.vue')

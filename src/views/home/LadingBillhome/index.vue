@@ -13,15 +13,15 @@
       <KYTable ref="table" style="height: calc(100vh - 300px)" :loading="loading" :colums="tableColums.cl"
         :table-data="tableColums.data" :total="FromSearch.total" :selection="false" :serial-number="false"
         :pagination-show="true" class="current" @page-change="pageChange($event)" @size-change="sizeChange($event)"
-        :operationWidth="200">
+        :operationWidth="200" @handleSelectionChange="handleSelectionChange">
         <template #operation="scope">
-          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill">
+          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(0)">
             去对账
           </n-button>
-          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary>
+          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(2)">
             编辑
           </n-button>
-          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary>
+          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(1)">
             详情
           </n-button>
           <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary>
@@ -102,8 +102,6 @@ let model = reactive({
   supplierName: null,
   beginSendTime: null,
   endSendTime: null,
-  reachSendTime: null,
-  reachEndSendTime: null
 });
 
 const getTable = async () => {
@@ -130,8 +128,19 @@ const cliderive = async (val: number, data?: any) => {
   // }
 }
 
+//多选
+const handleSelectionChange = (row: any) => {
+  console.log('row-----------', row);
+}
 //去对账
-const gobill = () => { }
+const gobill = (val: number) => {
+  router.push({
+    path: '/home/edit',
+    query: {
+      type: val
+    }
+  })
+}
 
 // 查询
 const getSearch = models => {
