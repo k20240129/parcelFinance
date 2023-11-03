@@ -1,30 +1,46 @@
 <template>
   <div class="h-full">
-    <n-card class="h-full shadow-sm rounded-16px">
+    <n-card class="shadow-sm rounded-16px">
       <SearchFrom @getSearch="getSearch" />
       <div class="stybox">
         <n-tabs v-model:value="activeTabs" type="line" animated @update:value="getTable">
-          <n-tab-pane :name="[]" tab="全部"> </n-tab-pane>
-          <n-tab-pane :name="[1]" tab="待对账"> </n-tab-pane>
-          <n-tab-pane :name="[2]" tab="待确认"> </n-tab-pane>
-          <n-tab-pane :name="[3]" tab="已对账"> </n-tab-pane>
+          <n-tab-pane :name="-1" tab="全部"> </n-tab-pane>
+          <n-tab-pane :name="0" tab="待对账"> </n-tab-pane>
+          <n-tab-pane :name="1" tab="待确认"> </n-tab-pane>
+          <n-tab-pane :name="2" tab="已对账"> </n-tab-pane>
         </n-tabs>
       </div>
+    </n-card>
+    <n-card class="shadow-sm rounded-16px">
       <KYTable ref="table" style="height: calc(100vh - 300px)" :loading="loading" :colums="tableColums.cl"
         :table-data="tableColums.data" :total="FromSearch.total" :selection="false" :serial-number="false"
         :pagination-show="true" class="current" @page-change="pageChange($event)" @size-change="sizeChange($event)"
         :operationWidth="200" @handleSelectionChange="handleSelectionChange">
+        <template #billType="scope">
+          <div v-if="scope.row.billType === 1">包裹店应付</div>
+          <div v-else>--</div>
+        </template>
+        <template #billStatus="scope">
+          <div v-if="scope.row.billStatus === 0">待对账</div>
+          <div v-else-if="scope.row.billStatus === 1">待确认</div>
+          <div v-else-if="scope.row.billStatus === 2">已对账</div>
+          <div v-else>--</div>
+        </template>
         <template #operation="scope">
-          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(0)">
+          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(0, scope.row.id)"
+            v-if="scope.row.billStatus === 0">
             去对账
           </n-button>
-          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(2)">
+          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(2, scope.row.id)"
+            v-if="scope.row.billStatus === 1">
             编辑
           </n-button>
-          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(1)">
+          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="gobill(1, scope.row.id)"
+            v-if="scope.row.billStatus === 1 || scope.row.billStatus === 2">
             详情
           </n-button>
-          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary>
+          <n-button v-underlineDirective="'#096dd9'" type="info" size="small" quaternary @click="download(scope.row)"
+            v-if="scope.row.billStatus === 1 || scope.row.billStatus === 2">
             下载
           </n-button>
         </template>
@@ -36,9 +52,9 @@
 <script setup lang="ts">
 import { reactive, getCurrentInstance, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-// import {
-//   QueryProductOrder,
-// } from '@/service';
+import {
+  QueryFinancialStatement,
+} from '@/service';
 import KYTable from '@/components/KY-table/KY-table.vue';
 import SearchFrom from './components/searchFrom.vue';
 import moment from "moment";
@@ -46,7 +62,7 @@ const router = useRouter();
 
 // ref实例
 const loading = ref(false)
-const activeTabs = ref<any[]>([]);
+const activeTabs = ref<any>();
 // 获取Component实例
 const proxy = getCurrentInstance()?.proxy as any;
 // 分页查询参数
@@ -60,48 +76,48 @@ const tableColums = reactive({
   cl: [
     {
       minWidth: '180',
-      prop: '',
+      prop: 'bilNumber',
       label: '账单编号'
     },
     {
       minWidth: '180',
-      prop: '',
-      label: '账单类型'
+      prop: 'billType',
+      label: '账单类型',
+      slot: 'billType'
     },
     {
       minWidth: '180',
-      prop: '',
+      prop: 'billingTime',
       label: '账单时间'
     },
     {
       minWidth: '180',
-      prop: '',
+      prop: 'payee',
       label: '收款方'
     },
     {
       minWidth: '180',
-      prop: '',
+      prop: 'currency',
       label: '币种'
     },
     {
       minWidth: '180',
-      prop: '',
+      prop: 'billAmount',
       label: '账单金额',
     },
     {
       minWidth: '180',
-      prop: '',
+      prop: 'billStatus',
       label: '状态',
-      slot: ''
+      slot: 'billStatus'
     },
   ],
   data: [{}]
 });
 let model = reactive({
-  billLadingNo: null,
-  supplierName: null,
-  beginSendTime: null,
-  endSendTime: null,
+  billLadingNo: '',
+  payee: '',
+  billTime: null as any,
 });
 
 const getTable = async () => {
@@ -110,22 +126,15 @@ const getTable = async () => {
     text: '查询中...',
     background: 'rgba(0, 0, 0, 0.7)'
   });
-  // const { data } = await QueryProductOrder({ ...model, ...FromSearch });
-  // tableColums.data = proxy?.$Utils.placeholder(data.data);
-  // FromSearch.total = data.total;
+  const { data } = await QueryFinancialStatement({ ...model, ...FromSearch, status: activeTabs.value });
+  tableColums.data = proxy?.$Utils.placeholder(data.data);
+  FromSearch.total = data.total;
   loading.close();
 };
 
 //导出全部
-const cliderive = async (val: number, data?: any) => {
-  // if (val === 1) {
-  //   proxy?.$Utils.exportsPost('/api/ExportExcel/ExportProductBill', {
-  //     ...FromSearch, ...model
-  //   }, `提单台账_${moment().format("YYYYMMDDHHmmss")}`);
-  // } else if (val === 2) {
-  //   let id = data.id
-  //   proxy?.$Utils.exportsPost('/api/ExportExcel/ExportOrder', { id }, `提单小包详情${data.billLadingNo}_${moment().format("YYYYMMDDHHmmss")}`);
-  // }
+const download = async (val: any) => {
+  proxy?.$Utils.exportsPost('/api/ExportExcel/ExportFinancialDetails', { id: val.id }, `应付帐单${val.payee}${val.billingTime}`);
 }
 
 //多选
@@ -133,11 +142,11 @@ const handleSelectionChange = (row: any) => {
   console.log('row-----------', row);
 }
 //去对账
-const gobill = (val: number) => {
+const gobill = (val: number, id: any) => {
   router.push({
     path: '/home/edit',
     query: {
-      type: val
+      type: val, id
     }
   })
 }

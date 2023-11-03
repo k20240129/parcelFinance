@@ -119,3 +119,65 @@ export function CustomerPutOnShelves(data: any) {
 		data,
 	});
 }
+
+//账单查询
+export function QueryFinancialStatement(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/QueryFinancialStatement",
+		method: "post",
+		data,
+	});
+}
+
+//账单查询详情
+export function QueryFinancialStatementDetails(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/QueryFinancialStatementDetails",
+		method: "post",
+		data,
+	});
+}
+
+//添加账单
+export function AddAndUpdateIFinancialStatement(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/AddAndUpdateIFinancialStatement",
+		method: "post",
+		data,
+	});
+}
+
+//新增查询是否有数据
+export function SelectFinancialStatementDetails(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/SelectFinancialStatementDetails",
+		method: "post",
+		data,
+	});
+}
+
+//新增账单详情
+export function AddFinancialStatementDetails(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/AddFinancialStatementDetails",
+		method: "post",
+		data,
+	});
+}
+
+//删除账单详情
+export function DeleteFinancialStatementDetails(id: number) {
+	return mockRequest({
+		url: "/api/FinancialStatement/DeleteFinancialStatementDetails?id=" + id,
+		method: "get",
+	});
+}
+
+//服务费列表
+export function QueryPriceList(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/QueryPriceList",
+		method: "post",
+		data,
+	});
+}
