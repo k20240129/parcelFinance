@@ -166,9 +166,12 @@ export function AddFinancialStatementDetails(data: any) {
 }
 
 //删除账单详情
-export function DeleteFinancialStatementDetails(id: number) {
+export function DeleteFinancialStatementDetails(
+	id: number,
+	financialId: number
+) {
 	return mockRequest({
-		url: "/api/FinancialStatement/DeleteFinancialStatementDetails?id=" + id,
+		url: `/api/FinancialStatement/DeleteFinancialStatementDetails?id=${id}&financialId=${financialId}`,
 		method: "get",
 	});
 }
@@ -177,6 +180,42 @@ export function DeleteFinancialStatementDetails(id: number) {
 export function QueryPriceList(data: any) {
 	return mockRequest({
 		url: "/api/FinancialStatement/QueryPriceList",
+		method: "post",
+		data,
+	});
+}
+
+//价格表修改
+export function UpdatePriceList(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/UpdatePriceList",
+		method: "post",
+		data,
+	});
+}
+
+//查询账单历史记录
+export function QueryHistoryPrice(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/QueryHistoryPrice",
+		method: "post",
+		data,
+	});
+}
+
+//渲染价格数据，文件转列表
+export function PriceListExcel(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/PriceListExcel",
+		method: "post",
+		data,
+	});
+}
+
+//上传保存添加价格信息
+export function AddPriceListExcel(data: any) {
+	return mockRequest({
+		url: "/api/FinancialStatement/AddPriceListExcel",
 		method: "post",
 		data,
 	});

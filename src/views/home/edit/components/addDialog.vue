@@ -3,19 +3,19 @@
     <n-modal v-model:show="props.showModal" :show-icon="false" preset="dialog" title="新增数据" :auto-focus="false"
       :on-mask-click="cancel" :on-close="cancel">
       <n-form ref="formRef" label-width="130" label-placement="left" :model="formData" v-if="!switchover">
-        <n-form-item label="计费单号：" path="billCdoe" :rule="[formItemRule('请填写', ['blur', 'change'])]">
-          <n-input v-model:value="formData.billCdoe" type="text" placeholder="请输入计费单号" />
+        <n-form-item label="业务单号：" path="businessNumber" :rule="[formItemRule('请填写', ['blur', 'change'])]">
+          <n-input v-model:value="formData.businessNumber" type="text" placeholder="请输入业务单号" />
         </n-form-item>
       </n-form>
       <n-form ref="formRef" label-width="130" label-placement="left" :model="formData" v-if="switchover">
         <n-form-item label="计费单号：">
-          <n-input v-model:value="formData.billCdoe" type="text" />
+          <n-input disabled v-model:value="formData.billCode" type="text" />
         </n-form-item>
         <n-form-item label="业务单号：">
           <n-input disabled v-model:value="formData.businessNumber" type="text" />
         </n-form-item>
         <n-form-item label="计费类型：">
-          <n-select v-model:value="formData.billType" :options="options" />
+          <n-select disabled v-model:value="formData.billType" :options="options" />
         </n-form-item>
         <n-form-item label="计费日期：">
           <n-input disabled v-model:value="formData.billTime" type="text" />
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, defineEmits, defineProps, watch } from 'vue';
+import { reactive, ref, defineEmits, defineProps, watch, toRefs } from 'vue';
 import { SelectFinancialStatementDetails, AddFinancialStatementDetails } from '@/service';
 import useMousePosition from '@/hooks/common/validation';
 import { useMessage } from 'naive-ui'
@@ -77,39 +77,37 @@ const { formItemRule } = useMousePosition();
 const formRef = ref<any>(null);
 const switchover = ref(false)
 // 表单参数
-const formData = reactive<any>({
-  billCdoe: '',
-});
+const formData = reactive({
+  businessNumber: '',//DO23661000018
+}) as any
 //点击下一步
 const nextstep = () => {
   formRef.value?.validate(async error => {
     if (error) return;
     const { data } = await SelectFinancialStatementDetails({
-      billNumber: formData.billCdoe
+      businessNumber: formData.businessNumber, financialStatementId: Number(props.financialStatementId)
     });
-    console.log(data);
-    // if (data.code === 200) {
-    switchover.value = true
-    // } else {
-    //   message.error('查询不到数据，请重新输入！')
-    // }
+    if (data.code === 200) {
+      Object.assign(formData, toRefs(data));
+      switchover.value = true
+    } else {
+      message.error(data.message)
+      formData.businessNumber = ''
+    }
   });
 }
 // 保存
-const submitCallback = () => {
-  console.log(props.financialStatementId);
-  formRef.value?.validate(async error => {
-    if (error) return;
-    const { data } = await AddFinancialStatementDetails({
-      ...formData, financialStatementId: props.financialStatementId
-    });
-    if (data.code === 200) {
-      message.success(data.massage)
-      emit('cencelbtn')
-    } else {
-      message.error(data.massage)
-    }
+const submitCallback = async () => {
+  const { data } = await AddFinancialStatementDetails({
+    ...formData, financialStatementId: Number(props.financialStatementId)
   });
+  if (data.code === 200) {
+    message.success(data.message)
+    cancel()
+  } else {
+    message.error(data.message)
+    cancel()
+  }
 };
 watch(() => props.activesty,
   (val) => {
@@ -119,10 +117,11 @@ watch(() => props.activesty,
 )
 //取消
 const cancel = () => {
-  emit('cencelbtn')
   Object.assign(formData, {
-    billCdoe: '',
+    businessNumber: '',
   });
+  switchover.value = false
+  emit('cencelbtn')
 };
 </script>
 

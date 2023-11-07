@@ -1,31 +1,12 @@
 <template>
   <!-- 公共文件上传组件，包含图片、文件等 -->
   <div class="uploadPage">
-    <n-upload
-      v-if="listType == 'image-card'"
-      v-model:file-list="fileList"
-      :accept="fileType"
-      :list-type="listType"
-      directory-dnd
-      :max="maxNum"
-      show-preview-button
-      show-download-button
-      :disabled="disabledIs"
-      @change="changeFile"
-    >
+    <n-upload v-if="listType == 'image-card'" v-model:file-list="fileList" :accept="fileType" :list-type="listType"
+      directory-dnd :max="maxNum" show-preview-button show-download-button :disabled="disabledIs" @change="changeFile">
       {{ $t('packageShopMessage.uploadFiles') }}
     </n-upload>
-    <n-upload
-      v-else
-      v-model:file-list="fileList"
-      :accept="fileType"
-      :list-type="listType"
-      directory-dnd
-      :max="maxNum"
-      show-preview-button
-      show-download-button
-      @change="changeFile"
-    >
+    <n-upload v-else v-model:file-list="fileList" :accept="fileType" :list-type="listType" directory-dnd :max="maxNum"
+      show-preview-button show-download-button @change="changeFile">
       <n-button> {{ $t('packageShopMessage.uploadFiles') }} </n-button>
     </n-upload>
   </div>
@@ -42,7 +23,8 @@ export default {
     fileType: String, // 文件类型格式 image-card(照片墙)  image  text
     maxNum: Number, // 最大上传文件数
     listType: String, // 文件形式  .doc,.docx,.pdf,.xls,.xlsx,.zip,.rar,.jpg,.png,.jpeg,.svg,.gif
-    disabledIs: Boolean
+    disabledIs: Boolean,
+    showbtn: true
   },
   setup(props, { emit }) {
     const allData = reactive({

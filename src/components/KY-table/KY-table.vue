@@ -7,65 +7,28 @@
         <!-- 表格区域 start -->
         <!-- height="500px" -->
         <slot name="top_title"></slot>
-        <el-table
-          ref="table"
-          v-loading="loading"
-          :default-sort="defaultSort"
-          :row-style="{ height: '37px' }"
-          :cell-style="{ padding: '0' }"
-          :data="tableData"
-          highlight-current-row
-          :header-cell-class-name="cellClass"
-          :span-method="objectSpanMethod"
-          v-bind="$attrs"
-          :expand-row-keys="expands"
-          :row-key="rowKey"
-          :tooltip-options="{
+        <el-table ref="table" v-loading="loading" :default-sort="defaultSort" :row-style="{ height: '37px' }" stripe
+          :cell-style="{ padding: '0' }" :data="tableData" highlight-current-row :header-cell-class-name="cellClass"
+          :span-method="objectSpanMethod" v-bind="$attrs" :expand-row-keys="expands" :row-key="rowKey" :tooltip-options="{
             effect: 'dark',
             placement: 'top',
             hideAfter: 200
-          }"
-          :header-cell-style="{
-            background: '#F6F6F6'
-          }"
-          :max-height="max_height"
-          @row-contextmenu="rightClick"
-          @select-all="selectAll"
-          @sort-change="sortChange"
-          @select="handSelect"
-          @selection-change="handleSelectionChange"
-          @getSelectionRows="getSelectionRows"
-          @current-change="handleCurrentChange"
-          @chikAll="chikAll"
-          @row-click="RowClick"
-        >
+          }" :header-cell-style="{
+  background: '#F6F6F6'
+}" :max-height="max_height" @row-contextmenu="rightClick" @select-all="selectAll" @sort-change="sortChange"
+          @select="handSelect" @selection-change="handleSelectionChange" @getSelectionRows="getSelectionRows"
+          @current-change="handleCurrentChange" @chikAll="chikAll" @row-click="RowClick">
           <el-table-column v-if="selection" type="selection" :reserve-selection="true" :width="55" />
-          <el-table-column
-            v-if="serialNumber.show"
-            type="index"
-            :width="serialNumber.width || 'auto'"
-            :label="serialNumber.label"
-            :index="indexMethod"
-          />
-          <el-table-column
-            v-for="item in colums"
-            :key="item.id"
-            :prop="item.prop"
-            :label="item.label"
-            :align="item.align || 'left'"
-            :width="item.width || 'auto'"
-            :min-width="item.minWidth ? item.minWidth : minWidth"
-            :fixed="item.fixed || false"
-            :show-overflow-tooltip="item.tooltip === undefined ? tooltip : item.tooltip"
-            :tooltip-options="{
+          <el-table-column v-if="serialNumber.show" type="index" :width="serialNumber.width || 'auto'"
+            :label="serialNumber.label" :index="indexMethod" />
+          <el-table-column v-for="item in colums" :key="item.id" :prop="item.prop" :label="item.label"
+            :align="item.align || 'left'" :width="item.width || 'auto'"
+            :min-width="item.minWidth ? item.minWidth : minWidth" :fixed="item.fixed || false"
+            :show-overflow-tooltip="item.tooltip === undefined ? tooltip : item.tooltip" :tooltip-options="{
               effect: 'dark',
               placement: 'top',
               hideAfter: 200
-            }"
-            :sortable="item.sortable == true ? true : false"
-            :formatter="item.formatter"
-            :type="item.type"
-          >
+            }" :sortable="item.sortable == true ? true : false" :formatter="item.formatter" :type="item.type">
             <!-- 表格头部标题 -->
             <template v-if="item?.header?.is === true" #header="{ column, $index }">
               <slot v-if="item?.header.slot" :name="item?.header.slot" :row="column" :index="$index" />
@@ -77,20 +40,11 @@
               <slot v-else-if="item.slot" :name="item.slot" :row="row" :index="$index" />
               <span v-else>{{ row[item.prop] }}</span>
             </template>
-            <el-table-column
-              v-for="item1 in item.colums"
-              :key="item1.id"
-              :prop="item.prop"
-              :label="item1.label"
-              :align="item1.align || 'left'"
-              :width="item1.width || 'auto'"
-              :min-width="item1.minWidth ? item1.minWidth : minWidth"
-              :fixed="item1.fixed || false"
+            <el-table-column v-for="item1 in item.colums" :key="item1.id" :prop="item.prop" :label="item1.label"
+              :align="item1.align || 'left'" :width="item1.width || 'auto'"
+              :min-width="item1.minWidth ? item1.minWidth : minWidth" :fixed="item1.fixed || false"
               :show-overflow-tooltip="item1.tooltip === undefined ? tooltip : item1.tooltip"
-              :sortable="item.sortable == true ? true : false"
-              :formatter="item1.formatter"
-              :type="item1.type"
-            >
+              :sortable="item.sortable == true ? true : false" :formatter="item1.formatter" :type="item1.type">
               <template v-if="item1?.header?.is === true" #header="{ column, $index }">
                 <slot v-if="item1?.header.slot" :name="item1?.header.slot" :row="column" :index="$index" />
                 <!-- :row="row"
@@ -103,38 +57,16 @@
               </template>
             </el-table-column>
           </el-table-column>
-          <el-table-column
-            v-if="Object.keys(operationData).length || $slots.operation || $slots.operation"
-            :label="label"
-            :width="operationWidth"
-            align="center"
-            fixed="right"
-          >
+          <el-table-column v-if="Object.keys(operationData).length || $slots.operation || $slots.operation" :label="label"
+            :width="operationWidth" align="center" fixed="right">
             <!-- <div class="operation-row" :scope="scope"></div> -->
             <template #default="scope">
-              <el-button
-                v-if="operationData.edit && operationData.edit.show"
-                icon="Edit"
-                size="small"
-                type="primary"
-                @click.stop="edit(scope)"
-                >{{ operationData.edit.text || '编辑' }}</el-button
-              >
-              <el-button
-                v-if="operationData.view && operationData.view.show"
-                type="text"
-                size="small"
-                @click.stop="view(scope)"
-                >{{ operationData.view.text || '查看' }}</el-button
-              >
-              <el-button
-                v-if="operationData.del && operationData.del.show"
-                type="danger"
-                size="small"
-                icon="DeleteFilled"
-                @click.stop="del(scope)"
-                >{{ operationData.del.text || '删除' }}</el-button
-              >
+              <el-button v-if="operationData.edit && operationData.edit.show" icon="Edit" size="small" type="primary"
+                @click.stop="edit(scope)">{{ operationData.edit.text || '编辑' }}</el-button>
+              <el-button v-if="operationData.view && operationData.view.show" type="text" size="small"
+                @click.stop="view(scope)">{{ operationData.view.text || '查看' }}</el-button>
+              <el-button v-if="operationData.del && operationData.del.show" type="danger" size="small" icon="DeleteFilled"
+                @click.stop="del(scope)">{{ operationData.del.text || '删除' }}</el-button>
               <slot name="operation" :row="scope.row" :index="scope.$index"></slot>
             </template>
           </el-table-column>
@@ -156,17 +88,9 @@
   </div>
   <div class="pagination_box">
     <div v-if="paginationShow" class="pagination all-t-r">
-      <el-pagination
-        v-model:current-page="pagination.pageIndex"
-        v-model:page-size="pagination.pageSize"
-        :small="small"
-        :page-sizes="pageSizes"
-        :layout="layout"
-        :total="total"
-        :background="background"
-        @current-change="$currentChange($event)"
-        @size-change="$sizeChange($event)"
-      >
+      <el-pagination v-model:current-page="pagination.pageIndex" v-model:page-size="pagination.pageSize" :small="small"
+        :page-sizes="pageSizes" :layout="layout" :total="total" :background="background"
+        @current-change="$currentChange($event)" @size-change="$sizeChange($event)">
       </el-pagination>
     </div>
   </div>
@@ -582,7 +506,7 @@ export default {
     },
     // 多选返回值
     handleSelectionChange(item) {
-      console.log(item);
+      console.log('勾选', item);
       this.$emit('handleSelectionChange', item);
     },
     // 页码发生改变
@@ -668,9 +592,11 @@ export default {
 ::v-deep .el-tooltip__popper {
   max-width: 80px;
 }
+
 #menu {
   position: fixed;
 }
+
 .content_table {
   background-color: #fff;
 
@@ -682,16 +608,18 @@ export default {
 ::v-deep.el-table .disabledCheck .cell .el-checkbox__inner {
   display: none !important;
 }
+
 /* 去掉全选按钮 */
 ::v-deep.el-table .disabledCheck .cell::before {
   content: '';
   text-align: center;
 }
+
 .pagination_box {
   display: flex;
   margin-top: 10px;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 // 菜单样式
@@ -731,5 +659,13 @@ export default {
       }
     }
   }
+}
+
+::v-deep .is-active {
+  background-color: #FB4A4C !important;
+}
+
+::v-deep .el-table__header>thead>tr>th {
+  background: #F5F7FA !important;
 }
 </style>

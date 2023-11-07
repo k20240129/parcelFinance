@@ -25,10 +25,10 @@ const options: DropdownOption[] = [
     key: 'user-center',
     icon: iconRender({ icon: 'carbon:user-avatar' })
   },
-  {
-    type: 'divider',
-    key: 'divider'
-  },
+  // {
+  //   type: 'divider',
+  //   key: 'divider'
+  // },
   {
     label: '退出登录',
     key: 'logout',

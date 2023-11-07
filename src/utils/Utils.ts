@@ -80,7 +80,7 @@ export default class Utils {
 			});
 	};
 	// post请求导入
-	static uplodPost = (url, file) => {
+	static uplodPost = (url: string, file: any) => {
 		return new Promise((res) => {
 			const loading = ElLoading.service({
 				lock: true,
@@ -96,12 +96,11 @@ export default class Utils {
 					data: formdata,
 				})
 					.then(({ data }) => {
-						console.log(data);
-
+						// console.log("data", data);
 						if (data.code === 200) {
 							window.$notification?.success({
 								title: "成功",
-								content: `${data.message}`,
+								content: "获取导入数据成功",
 								duration: 3000,
 							});
 						} else {
@@ -112,7 +111,7 @@ export default class Utils {
 							});
 						}
 						loading.close();
-						res(0);
+						res(data);
 					})
 					.catch(() => {
 						loading.close();

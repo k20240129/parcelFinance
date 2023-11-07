@@ -1,15 +1,19 @@
 <template>
-  <div class="h-full">
-    <n-card class="h-full shadow-sm rounded-16px">
-      <div class="tit">
-        <span v-if="route.query.type == '0'">完善/编辑应付账单</span>
-        <span v-else-if="route.query.type == '1'">查看应付账单</span>
-        <span v-else-if="route.query.type == '2'">编辑应付账单</span>
-        <n-button strong secondary type="info" @click="downloadbill">
+  <div class="box">
+    <div class="getback">
+      <span v-if="route.query.type == '0'">完善/编辑应付账单</span>
+      <span v-else-if="route.query.type == '1'">查看应付账单</span>
+      <span v-else-if="route.query.type == '2'">编辑应付账单</span>
+      <n-button @click="getback" color="#F5F7FA" :text-color="'#333'">
+        返回
+      </n-button>
+    </div>
+    <n-card class="shadow-sm rounded-16px mb">
+      <div class="nametit">基本信息
+        <n-button strong secondary type="info" size="small" @click="downloadbill">
           下载账单
         </n-button>
       </div>
-      <div class="nametit">基础信息</div>
       <div class="jichucontit">
         <n-form ref="formRef" label-placement="left" label-width="100">
           <n-grid x-gap="12" :cols="2">
@@ -47,13 +51,13 @@
             </n-gi>
             <n-gi>
               <n-form-item label="账单状态：">
-                <n-button type="error" v-if="model.billStatus === 0">
+                <n-button size="small" tertiary type="error" v-if="model.billStatus === 0">
                   待对账
                 </n-button>
-                <n-button type="error" v-if="model.billStatus === 1">
+                <n-button size="small" tertiary type="error" v-if="model.billStatus === 1">
                   待确认
                 </n-button>
-                <n-button type="error" v-if="model.billStatus === 2">
+                <n-button size="small" tertiary type="error" v-if="model.billStatus === 2">
                   已对账
                 </n-button>
               </n-form-item>
@@ -61,19 +65,21 @@
           </n-grid>
         </n-form>
       </div>
+    </n-card>
+    <n-card class="shadow-sm rounded-16px">
       <div class="nametit">账单详情</div>
       <div class="tabs">
         <div :class="activesty === 1 ? 'activestyly' : ''" @click="qiehuan(1)">签收费用</div>
         <div :class="activesty === 2 ? 'activestyly' : ''" @click="qiehuan(2)">拒收费用</div>
       </div>
       <div class="cost">签收费用：共{{ bill.countnum }}条数据，计费总金额：${{ bill.money }}
-        <n-button size="small" type="info" ghost @click="addparty" v-if="route.query.type !== '1'">
-          新增一行
+        <n-button size="small" ghost type="error" @click="addparty" v-if="route.query.type !== '1'">
+          + 新增一行
         </n-button>
       </div>
-      <KYTable ref="table" :loading="loading" :colums="tableColums.cl" :table-data="tableColums.data"
-        :total="FromSearch.total" :selection="false" :serial-number="false" :pagination-show="true" class="current"
-        @page-change="pageChange($event)" @size-change="sizeChange($event)">
+      <KYTable ref="table" style="height: 22vh;" :loading="loading" :colums="tableColums.cl"
+        :table-data="tableColums.data" :total="FromSearch.total" :selection="false" :serial-number="false"
+        :pagination-show="true" class="current" @page-change="pageChange($event)" @size-change="sizeChange($event)">
         <template #billingType="scope">
           <div v-if="scope.row.billingType === 1">包裹店签收费用</div>
           <div v-else-if="scope.row.billingType === 2">包裹店拒收费用</div>
@@ -87,9 +93,11 @@
         </template>
       </KYTable>
       <div class="cost">账单总金额，即签收与拒收费用总计：共{{ bill.listcount }}条数据，计费总金额：${{ bill.listMoeny }}</div>
-      <div class="cost"> <n-button type="info" @click="submitbill">
+      <div class="cost" v-if="route.query.type !== '1'">
+        <n-button type="info" @click="submitbill">
           提交账单
-        </n-button></div>
+        </n-button>
+      </div>
     </n-card>
     <AddDialog :showModal="showModal" @cencelbtn="cencelbtn" :activesty="activesty"
       :financialStatementId="Number(route.query.id)" />
@@ -105,7 +113,8 @@ import moment from "moment";
 import {
   QueryFinancialStatementDetails,
   QueryFinancialStatement,
-  DeleteFinancialStatementDetails
+  DeleteFinancialStatementDetails,
+  AddAndUpdateIFinancialStatement
 } from '@/service';
 import KYTable from '@/components/KY-table/KY-table.vue';
 const message = useMessage()
@@ -185,15 +194,32 @@ const getTable = async () => {
   })
   bill.value = data
   tableColums.data = data.response.data
+  FromSearch.total = data.response.total;
   loading.close();
 }
 
+//返回
+const getback = () => {
+  router.push({
+    path: '/home/LadingBillhome',
+  })
+}
 //下载账单
 const downloadbill = async () => {
   proxy?.$Utils.exportsPost('/api/ExportExcel/ExportFinancialDetails', { id: route.query.id }, `应付帐单${model.payee}${model.billingTime}`);
 }
 //提交账单
-const submitbill = async () => { }
+const submitbill = async () => {
+  //状态只能为待确认
+  const { data } = await AddAndUpdateIFinancialStatement({ id: route.query.id, billStatus: 1 })
+  console.log(data);
+  if (data.code === 200) {
+    message.success(data.message)
+    getback()
+  } else {
+    message.error(data.message)
+  }
+}
 
 //删除
 const cliclear = async (id: number) => {
@@ -203,7 +229,7 @@ const cliclear = async (id: number) => {
     positiveText: '确定',
     negativeText: '取消',
     onPositiveClick: async () => {
-      const res = await DeleteFinancialStatementDetails(id)
+      const res = await DeleteFinancialStatementDetails(id, Number(route.query.id))
       if (res.data.code === 200) {
         message.success(res.data.message)
       }
@@ -243,19 +269,32 @@ getinformation()
 getTable();
 </script>
 
-<style scoped>
-.tit {
+<style scoped lang="scss">
+.box {
+  padding-top: 76px;
+  position: relative;
   width: 100%;
-  height: 47px;
-  font-size: 25px;
-  font-weight: 500;
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 10px;
-  position: reactive;
 
-  >.n-button {
-    position: absolute;
-    right: 50px;
+  .getback {
+    position: fixed;
+    right: 0;
+    top: 80px;
+    width: 100%;
+    padding: 0 2% 0 250px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.12);
+    height: 76px;
+    z-index: 11;
+
+    span {
+      font-family: PingFangSC-Semibold;
+      font-size: 24px;
+      font-weight: normal;
+      color: rgba(0, 0, 0, 0.85);
+    }
   }
 }
 
@@ -271,10 +310,18 @@ getTable();
 }
 
 .nametit {
-  font-size: 20px;
+  border-bottom: 1px dashed #E0E0E6;
+  font-family: PingFangSC-Semibold;
+  font-size: 16px;
   font-weight: 600;
-  color: black;
-  margin-bottom: 15px;
+  color: #333333;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+
+  >.n-button {
+    position: absolute;
+    right: 50px;
+  }
 }
 
 .jichucontit {
@@ -288,8 +335,9 @@ getTable();
   display: flex;
 
   .activestyly {
-    background: #606AFF;
+    background: #FB4A4C;
     color: #fff;
+    border: 1px solid #fff;
   }
 
   >div {
@@ -299,11 +347,8 @@ getTable();
     justify-content: center;
     align-items: center;
     width: 86px;
-    border: 1px solid #c0c0c0;
-  }
-
-  :last-child {
-    border-left: 0;
+    border-radius: 16px;
+    background: #F5F7FA;
   }
 }
 </style>
