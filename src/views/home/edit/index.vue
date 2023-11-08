@@ -72,7 +72,8 @@
         <div :class="activesty === 1 ? 'activestyly' : ''" @click="qiehuan(1)">签收费用</div>
         <div :class="activesty === 2 ? 'activestyly' : ''" @click="qiehuan(2)">拒收费用</div>
       </div>
-      <div class="cost">签收费用：共{{ bill.countnum }}条数据，计费总金额：${{ bill.money }}
+      <div class="cost"> <span v-if="activesty === 1">签收费用</span><span v-if="activesty === 2">拒收费用</span> ：共{{
+        bill.countnum }}条数据，计费总金额：${{ bill.money }}
         <n-button size="small" ghost type="error" @click="addparty" v-if="route.query.type !== '1'">
           + 新增一行
         </n-button>
@@ -206,7 +207,7 @@ const getback = () => {
 }
 //下载账单
 const downloadbill = async () => {
-  proxy?.$Utils.exportsPost('/api/ExportExcel/ExportFinancialDetails', { id: route.query.id }, `应付帐单${model.payee}${model.billingTime}`);
+  proxy?.$Utils.exportsPost('/api/ExportExcel/ExportFinancialDetails', { id: route.query.id }, `应付帐单${model.value.payee}${model.value.billingTime}`);
 }
 //提交账单
 const submitbill = async () => {

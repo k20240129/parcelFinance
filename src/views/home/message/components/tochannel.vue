@@ -9,7 +9,7 @@
             <svg-icon local-icon="uploading" style="font-size: 70px;margin: 0 auto;" />
             <div style="display: flex;flex-direction: column;" v-if="!tableshow">
               <n-button type="info" size="small" class="mr-2" style="margin: 15px;">上传文档</n-button>
-              <a href="https://newkybuket.oss-cn-hangzhou.aliyuncs.com/kimigo/%E4%BB%B7%E6%A0%BC%E8%A1%A8%E6%A8%A1%E6%9D%BF.xlsx"
+              <a href="https://newkybuket.oss-cn-hangzhou.aliyuncs.com/exampledir/%E3%80%90%E6%A8%A1%E7%89%88%E3%80%91%E5%8C%85%E8%A3%B9%E5%BA%97%E6%9C%8D%E5%8A%A1%E8%B4%B91-1699286400.xlsx"
                 @click.stop>下载Excel模板</a>
             </div>
             <div style="display: flex;flex-direction: column;" v-if="tableshow">
@@ -129,21 +129,22 @@ const cancel = () => {
 };
 </script>
 
-<style> a {
-   text-decoration: underline;
- }
+<style lang="scss" scope>
+a {
+  text-decoration: underline;
+}
 
- .modal {
-   width: 70% !important;
- }
+.modal {
+  width: 70% !important;
+}
 
- .uploadbox {
-   margin: 0 auto;
-   margin-bottom: 16px;
- }
+.uploadbox {
+  margin: 0 auto;
+  margin-bottom: 16px;
+}
 
- .n-dialog__content {
-   display: flex;
-   flex-direction: column;
- }
+.n-dialog__content {
+  display: flex;
+  flex-direction: column;
+}
 </style>

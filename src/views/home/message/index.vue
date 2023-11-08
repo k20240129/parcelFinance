@@ -14,6 +14,12 @@
         :table-data="tableColums.data" :total="FromSearch.total" :serial-number="false" :selection="true"
         :pagination-show="true" class="current" @page-change="pageChange($event)" @size-change="sizeChange($event)"
         @handleSelectionChange="handleSelectionChange">
+        <template #priceEffectiveTime="scope">
+          {{ scope.row.priceEffectiveTime }}
+          <n-button :type="scope.row.priceStatus == '无效' ? 'error' : 'primary'" quaternary>
+            {{ scope.row.priceStatus }}
+          </n-button>
+        </template>
         <template #operation="scope">
           <n-button color="#FB4A4C" type="info" quaternary @click="cliedit(scope.row, 1)">
             编辑
@@ -98,14 +104,15 @@ const tableColums = reactive({
       label: '收款方名称'
     },
     {
-      minWidth: '150',
+      minWidth: '100',
       prop: 'currency',
       label: '币种',
     },
     {
-      minWidth: '200',
+      minWidth: '300',
       prop: 'priceEffectiveTime',
-      label: '价格有效期'
+      label: '价格有效期',
+      slot: 'priceEffectiveTime'
     },
     {
       minWidth: '160',

@@ -149,7 +149,7 @@ const gobill = (val: number, id: any) => {
 // 查询
 const getSearch = models => {
   model = { ...models };
-  getTable();
+  getTable(activeTabs.value);
 };
 // 页码调整
 const pageChange = pageIndex => {

@@ -78,9 +78,9 @@ const formRef = ref<any>(null);
 const switchover = ref(false)
 // 表单参数
 const formData = reactive({
-  businessNumber: '',//DO23661000018
+  businessNumber: '',
 }) as any
-//点击下一步
+//点击下一步//GR16863902491
 const nextstep = () => {
   formRef.value?.validate(async error => {
     if (error) return;
@@ -88,8 +88,9 @@ const nextstep = () => {
       businessNumber: formData.businessNumber, financialStatementId: Number(props.financialStatementId)
     });
     if (data.code === 200) {
-      Object.assign(formData, toRefs(data));
+      Object.assign(formData, toRefs(data.data));
       switchover.value = true
+      message.success(data.message)
     } else {
       message.error(data.message)
       formData.businessNumber = ''
