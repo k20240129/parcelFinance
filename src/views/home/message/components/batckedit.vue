@@ -2,7 +2,7 @@
   <div>
     <n-modal class="modal" v-model:show="props.BatchEditshow" :show-icon="false" :width="600" preset="dialog" title="批量编辑"
       :auto-focus="false" :on-mask-click="cancel" :on-close="cancel">
-      <p>批量编辑以下x条数据，将统一修改字段</p>
+      <p>批量编辑以下{{ props.editdata.length }}条数据，将统一修改字段</p>
       <div>
         <span v-for="item, index in props.editdata" :key="item.id"> 收款方{{ index + 1 }}：{{ item.payeeCode }}，{{
           item.payeeName }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -89,7 +89,7 @@ const tableColums = reactive({
 });
 // 保存
 const submitCallback = async () => {
-  props.editdata.forEach(item => {
+  props.editdata.forEach((item: any) => {
     item.priceSentime = priceEffectiveTime.value[0].toString()
     item.priceEndtime = priceEffectiveTime.value[1].toString()
     item.priceOne = Number(tableColums.data[0].priceOne)
@@ -107,6 +107,7 @@ const submitCallback = async () => {
 watch(() => props.editdata,
   (val) => {
     if (Array.isArray(val) && val.length > 0) {
+      tableColums.data = []
       tableColums.data.push(val[0])
       const dates = val[0].priceEffectiveTime.split('-');
       const startDate = new Date(dates[0]).getTime();

@@ -103,9 +103,9 @@ const handleChange = (file: any) => {
       text: '查询中...',
       background: 'rgba(0, 0, 0, 0.7)'
     });
-    console.log(res);
-    tableColums.data = res.data.priceListViewModels;
-    total.value = res.data.priceCount
+    console.log(res.data);
+    tableColums.data = res.data.data;
+    total.value = res.data.total
     tableshow.value = true
     loading.close();
   });
