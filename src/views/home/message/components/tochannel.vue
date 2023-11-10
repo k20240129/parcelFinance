@@ -125,7 +125,7 @@ const submitCallback = async () => {
     const formattedDate = dateParts.join('-');
     const dateParts2 = item.priceEffectiveEndtime.split('/');
     const formattedDate2 = dateParts2.join('-');
-    return { ...item, priceEffectiveEndtime: formattedDate, priceEffectiveSentime: formattedDate2 };
+    return { ...item, priceEffectiveEndtime: formattedDate2, priceEffectiveSentime: formattedDate };
   });
 
   console.log(updatedArr);
