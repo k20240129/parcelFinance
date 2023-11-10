@@ -4,77 +4,71 @@
       <span v-if="route.query.type == '0'">完善/编辑应付账单</span>
       <span v-else-if="route.query.type == '1'">查看应付账单</span>
       <span v-else-if="route.query.type == '2'">编辑应付账单</span>
-      <n-button @click="getback" color="#F5F7FA" :text-color="'#333'">
-        返回
-      </n-button>
-    </div>
-    <n-card class="shadow-sm rounded-16px mb">
-      <div class="nametit">基本信息
-        <n-button strong secondary type="info" size="small" @click="downloadbill">
-          下载账单
+      <div class="getbarksty">
+        <svg-icon local-icon="printbtn" style="width: 84px;height: 34px;" @click="downloadbill" />
+        <n-button @click="getback" color="#F5F7FA" :text-color="'#333'" style="margin-left: 12px;">
+          返回
         </n-button>
       </div>
+    </div>
+    <n-card class="shadow-sm rounded-16px" style="margin-bottom: 12px;">
+      <div class="nametit">基本信息
+      </div>
       <div class="jichucontit">
-        <n-form ref="formRef" label-placement="left" label-width="100">
+        <n-form ref="formRef" label-placement="left" label-width="100" label-align="left">
           <n-grid x-gap="12" :cols="2">
             <n-gi>
               <n-form-item label="付款方：">
-                <n-input style="width: 80%" type="text" disabled placeholder="哈米信息科技有限公司" />
+                哈米信息科技有限公司
               </n-form-item>
             </n-gi>
             <n-gi>
               <n-form-item label="收款方：">
-                <n-input v-model:value="model.payee" style="width: 80%" type="text" disabled />
+                {{ model.payee }}
               </n-form-item>
             </n-gi> <n-gi>
               <n-form-item label="账单编码：">
-                <n-input v-model:value="model.bilNumber" style="width: 80%" type="text" disabled />
+                {{ model.bilNumber }}
               </n-form-item>
             </n-gi>
             <n-gi>
               <n-form-item label="账单类型：">
-                <n-select v-model:value="model.billType" :options="options" style="width: 80%" disabled />
+                {{ model.billType }}
               </n-form-item>
             </n-gi> <n-gi>
               <n-form-item label="账单时间：">
-                <n-input v-model:value="model.billingTime" style="width: 80%" type="text" disabled />
+                {{ model.billingTime }}
               </n-form-item>
             </n-gi>
             <n-gi>
               <n-form-item label="币种：">
-                <n-input v-model:value="model.currency" style="width: 80%" type="text" disabled />
+                {{ model.currency }}
               </n-form-item>
             </n-gi> <n-gi>
               <n-form-item label="账单金额：">
-                <n-input v-model:value="model.billAmount" style="width: 80%" type="text" disabled />
+                {{ model.billAmount }}
               </n-form-item>
             </n-gi>
             <n-gi>
               <n-form-item label="账单状态：">
-                <n-button size="small" tertiary type="error" v-if="model.billStatus === 0">
-                  待对账
-                </n-button>
-                <n-button size="small" tertiary type="error" v-if="model.billStatus === 1">
-                  待确认
-                </n-button>
-                <n-button size="small" tertiary type="error" v-if="model.billStatus === 2">
-                  已对账
-                </n-button>
+                <div v-if="model.billStatus === 0" class="redbtn">待对账</div>
+                <div v-if="model.billStatus === 1" class="yellowbtn">待确认</div>
+                <div v-if="model.billStatus === 2" class="greenbtn">已对账</div>
               </n-form-item>
             </n-gi>
           </n-grid>
         </n-form>
       </div>
     </n-card>
-    <n-card class="shadow-sm rounded-16px">
+    <n-card class="shadow-sm rounded-16px" style="margin-bottom: 56px;">
       <div class="nametit">账单详情</div>
       <div class="tabs">
         <div :class="activesty === 1 ? 'activestyly' : ''" @click="qiehuan(1)">签收费用</div>
-        <div :class="activesty === 2 ? 'activestyly' : ''" @click="qiehuan(2)">拒收费用</div>
+        <div style="margin-left: 12px;" :class="activesty === 2 ? 'activestyly' : ''" @click="qiehuan(2)">拒收费用</div>
       </div>
       <div class="cost"> <span v-if="activesty === 1">签收费用</span><span v-if="activesty === 2">拒收费用</span> ：共{{
         bill.countnum }}条数据，计费总金额：${{ bill.money }}
-        <n-button size="small" ghost type="error" @click="addparty" v-if="route.query.type !== '1'">
+        <n-button ghost type="error" @click="addparty" v-if="route.query.type !== '1'">
           + 新增一行
         </n-button>
       </div>
@@ -93,9 +87,9 @@
           </n-button>
         </template>
       </KYTable>
-      <div class="cost">账单总金额，即签收与拒收费用总计：共{{ bill.listcount }}条数据，计费总金额：${{ bill.listMoeny }}</div>
-      <div class="cost" v-if="route.query.type !== '1'">
-        <n-button type="info" @click="submitbill">
+      <div class="cost postionab">账单总金额，即签收与拒收费用总计：共{{ bill.listcount }}条数据，计费总金额：${{ bill.listMoeny }}</div>
+      <div class="cost btntijiao" v-if="route.query.type !== '1'">
+        <n-button type="error" color="#FB4A4C" @click="submitbill">
           提交账单
         </n-button>
       </div>
@@ -271,17 +265,22 @@ getTable();
 </script>
 
 <style scoped lang="scss">
+.getbarksty {
+  display: flex;
+  align-items: center;
+}
+
 .box {
-  padding-top: 76px;
+  padding-top: 78px;
   position: relative;
   width: 100%;
 
   .getback {
     position: fixed;
     right: 0;
-    top: 80px;
+    top: 89px;
     width: 100%;
-    padding: 0 2% 0 250px;
+    padding: 0 40px 0 250px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -292,7 +291,7 @@ getTable();
 
     span {
       font-family: PingFangSC-Semibold;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: normal;
       color: rgba(0, 0, 0, 0.85);
     }
@@ -301,12 +300,14 @@ getTable();
 
 .cost {
   margin-bottom: 10px;
-  position: reactive;
+  position: relative;
   height: 30px;
+  display: flex;
+  align-items: center;
 
   >.n-button {
     position: absolute;
-    right: 50px;
+    right: 4px;
   }
 }
 
@@ -316,23 +317,19 @@ getTable();
   font-size: 16px;
   font-weight: 600;
   color: #333333;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   padding-bottom: 16px;
-
-  >.n-button {
-    position: absolute;
-    right: 50px;
-  }
 }
 
 .jichucontit {
   width: 65%;
+  margin-bottom: -4px;
 }
 
 .tabs {
   width: 100%;
   height: 35px;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   display: flex;
 
   .activestyly {
@@ -351,5 +348,33 @@ getTable();
     border-radius: 16px;
     background: #F5F7FA;
   }
+}
+
+.postionab {
+  position: relative;
+  top: -24px;
+}
+
+.btntijiao {
+  position: fixed;
+  right: 0;
+  bottom: 0px;
+  width: 100%;
+  padding-left: 250px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  height: 56px;
+  z-index: 11;
+  margin: 0;
+  box-shadow: 0px -4px 8px 0px rgba(0, 0, 0, 0.05);
+
+  .n-button {
+    margin-right: calc((100% - 220px) / 2);
+  }
+}
+
+.n-form-item {
+  height: 42px;
 }
 </style>

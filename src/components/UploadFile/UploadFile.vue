@@ -7,7 +7,7 @@
     </n-upload>
     <n-upload v-else v-model:file-list="fileList" :accept="fileType" :list-type="listType" directory-dnd :max="maxNum"
       show-preview-button show-download-button @change="changeFile">
-      <n-button> {{ $t('packageShopMessage.uploadFiles') }} </n-button>
+      <n-button @click="clearfile"> {{ $t('packageShopMessage.uploadFiles') }} </n-button>
     </n-upload>
   </div>
 </template>
@@ -36,11 +36,11 @@ export default {
     // 文件上传和删除
 
     const changeFile = async file => {
+      console.log(111);
       if (file.event) {
         // 文件上传
         const formdata = new FormData();
         formdata.append('file', file.file.file);
-        console.log(file);
         const config = {
           // headers: { 'Content-Type': 'multipart/form-data' }
         };
@@ -84,6 +84,12 @@ export default {
         props.saveFileArr.splice(fileIndex, 1);
       }
     };
+    const clearfile = () => {
+      console.log(1, props.saveFileArr);
+      allData.fileList = [];
+      props.saveFileArr = []
+      emit('clearemits')
+    }
     onMounted(() => {
       // 修改时图片回显
       allData.fileList = [];
@@ -104,7 +110,8 @@ export default {
     });
     return {
       ...toRefs(allData),
-      changeFile
+      changeFile,
+      clearfile
     };
   }
 };

@@ -2,29 +2,34 @@
   <div class="h-full">
     <n-card class="shadow-sm rounded-16px scerch">
       <SearchFrom @getSearch="getSearch" />
-      <tabs :tablist="tablist" @tabsemit="getTable" />
+      <tabs :tablist="tablist" @tabsemit="getTable" :tabname="'分类'" />
     </n-card>
     <n-card class="shadow-sm rounded-16px">
       <div style="margin-bottom: 16px;">
         <n-dropdown trigger="hover" :options="options" @select="handleSelect">
-          <n-button type="error" color="#FB4A4C">批量处理</n-button>
+          <n-button type="error" color="#FB4A4C" class="rotate-button">
+            <template #icon>
+              <svg-icon local-icon="pull-down" style="font-size: 22px;" class="icon" />
+            </template>
+            批量处理
+          </n-button>
         </n-dropdown>
       </div>
-      <KYTable ref="table" style="height: calc(100vh - 400px)" :loading="loading" :colums="tableColums.cl"
-        :table-data="tableColums.data" :total="FromSearch.total" :serial-number="false" :selection="true"
-        :pagination-show="true" class="current" @page-change="pageChange($event)" @size-change="sizeChange($event)"
+      <KYTable ref="table" style="height: calc(100vh - 398px)" :colums="tableColums.cl" :table-data="tableColums.data"
+        :total="FromSearch.total" :serial-number="false" :selection="true" :pagination-show="true" class="current"
+        @page-change="pageChange($event)" @size-change="sizeChange($event)"
         @handleSelectionChange="handleSelectionChange">
         <template #priceEffectiveTime="scope">
           {{ scope.row.priceEffectiveTime }}
-          <n-button :type="scope.row.priceStatus == '无效' ? 'error' : 'primary'" quaternary>
+          <n-button :type="scope.row.priceStatus == '无效' ? 'error' : 'success'" quaternary>
             {{ scope.row.priceStatus }}
           </n-button>
         </template>
         <template #operation="scope">
-          <n-button color="#FB4A4C" type="info" quaternary @click="cliedit(scope.row, 1)">
+          <n-button color="#0256ff" type="info" quaternary @click="cliedit(scope.row, 1)">
             编辑
           </n-button>
-          <n-button color="#FB4A4C" type="info" quaternary @click="cliedit(scope.row, 2)">
+          <n-button color="#0256ff" type="info" quaternary @click="cliedit(scope.row, 2)">
             历史价格
           </n-button>
         </template>
@@ -78,7 +83,6 @@ const priceShow = ref(false)
 const BatchEditshow = ref(false)
 const tochannelshow = ref(false)
 const activeTabs = ref<any>();
-const loading = ref(false)
 const pricerow = ref({}) as any
 const editdata = ref({})
 const batckedit = ref([]) as any
@@ -207,8 +211,9 @@ const cliedit = async (row: any, type: number) => {
   }
 }
 // 查询
-const getSearch = models => {
+const getSearch = (models: any) => {
   model = { ...models };
+  table.value!.clearSelection()
   getTable();
 };
 // 页码调整
@@ -226,6 +231,14 @@ getTable();
 </script>
 
 <style scoped lang="scss">
+.rotate-button .icon {
+  transition: transform 0.3s ease;
+}
+
+.rotate-button:hover .icon {
+  transform: rotate(180deg);
+}
+
 .stybox {
   display: flex;
   align-items: center;
@@ -262,6 +275,6 @@ getTable();
 }
 
 .scerch {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 </style>

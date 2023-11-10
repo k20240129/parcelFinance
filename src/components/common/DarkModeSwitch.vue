@@ -1,6 +1,7 @@
 <template>
   <div class="flex-center text-18px cursor-pointer" @click="handleSwitch">
     <icon-mdi-moon-waning-crescent v-if="darkMode" />
+    <!-- <svg-icon local-icon="sun" v-if="darkMode" /> -->
     <icon-mdi-white-balance-sunny v-else />
   </div>
 </template>

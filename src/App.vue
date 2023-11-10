@@ -49,4 +49,6 @@ subscribeStore();
 useGlobalEvents();
 </script>
 
-<style scoped></style>
+<style >
+@import url("@/styles/scss/public.scss");
+</style>

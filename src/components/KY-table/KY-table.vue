@@ -8,7 +8,7 @@
         <!-- height="500px" -->
         <slot name="top_title"></slot>
         <el-table ref="table" v-loading="loading" :default-sort="defaultSort" :row-style="{ height: '37px' }" stripe
-          :cell-style="{ padding: '0' }" :data="tableData" highlight-current-row :header-cell-class-name="cellClass"
+          :cell-style="{ padding: '0' }" :data="tableData" :header-cell-class-name="cellClass"
           :span-method="objectSpanMethod" v-bind="$attrs" :expand-row-keys="expands" :row-key="rowKey" :tooltip-options="{
             effect: 'dark',
             placement: 'top',

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <n-modal class="modal" v-model:show="props.BatchEditshow" :show-icon="false" :width="600" preset="dialog" title="批量编辑"
-      :auto-focus="false" :on-mask-click="cancel" :on-close="cancel">
+    <n-modal style="width: 70%;" v-model:show="props.BatchEditshow" :show-icon="false" :width="600" preset="dialog"
+      title="批量编辑" :auto-focus="false" :on-mask-click="cancel" :on-close="cancel">
       <p>批量编辑以下{{ props.editdata.length }}条数据，将统一修改字段</p>
       <div>
         <span v-for="item, index in props.editdata" :key="item.id"> 收款方{{ index + 1 }}：{{ item.payeeCode }}，{{
@@ -124,8 +124,4 @@ const cancel = () => {
 };
 </script>
 
-<style>
-.modal {
-  width: 70% !important;
-}
-</style>
+<style lang="scss" scoped></style>

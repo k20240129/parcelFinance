@@ -1,13 +1,12 @@
 <template>
   <div class="tabBox">
-    <span>状态分类：</span>
+    <span>{{ props.tabname }}：</span>
     <div :class="tabindex === item.id ? 'colorred' : 'colorthree'" v-for="(item, index) in props.tablist" :key="index"
       @click="cligetdata(item.id)">
       {{ item.name }}
     </div>
   </div>
 </template>
-
 
 <script setup lang="ts">
 import { ref, defineEmits, defineProps, watch } from 'vue';
@@ -16,6 +15,10 @@ const props = defineProps({
     type: Array,
     default: []
   },
+  tabname: {
+    type: String,
+    default: '状态分类'
+  }
 })
 const emit = defineEmits(['tabsemit']);
 const list = ref([]) as any

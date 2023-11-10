@@ -2,7 +2,7 @@
   <router-link :to="routeHomePath" class="flex-center w-full nowrap-hidden">
     <!-- <system-logo class="text-32px text-primary" /> -->
     <svg-icon local-icon="logo" style="font-size: 35px; color: #f00; margin-right: 5px" />
-    <h2 v-show="showTitle" class="pl-8px text-16px font-bold text-primary transition duration-300 ease-in-out">
+    <h2 v-show="showTitle" class="texttitle">
       {{ $t(title) }}
     </h2>
   </router-link>
@@ -26,4 +26,16 @@ const routeHomePath = routePath('root');
 const { title } = useAppInfo();
 </script>
 
-<style scoped></style>
+<style scoped>
+.texttitle {
+  height: 16px;
+  font-family: PingFang SC;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  color: #FFFFFF;
+  margin-left: 8px;
+}
+</style>

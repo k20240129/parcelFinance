@@ -9,11 +9,7 @@
     <header-menu v-else />
     <div class="flex justify-end h-full">
       <full-screen />
-      <!-- 123123 -->
       <theme-mode />
-      <!-- <setting-button v-if="showButton" />
-      <SystemMssage />
-      <LanguageChange /> -->
       <user-avatar />
     </div>
   </dark-mode-container>
@@ -28,10 +24,8 @@ import {
   GlobalBreadcrumb,
   HeaderMenu,
   MenuCollapse,
-  SettingButton,
   ThemeMode,
   UserAvatar
-  // SystemMessage
 } from './components';
 import LanguageChange from './components/LanguageChange.vue';
 import SystemMssage from './components/system-message.vue';

@@ -1,34 +1,16 @@
 <template>
   <div ref="tabRef" class="h-full" :class="[isChromeMode ? 'flex items-end' : 'flex-y-center']">
-    <component
-      :is="activeComponent"
-      v-for="(item, index) in tab.tabs"
-      :key="item.fullPath"
-      :is-active="tab.activeTab === item.fullPath"
-      :primary-color="theme.themeColor"
-      :closable="!(item.name === tab.homeTab.name || item.meta.affix)"
-      :dark-mode="theme.darkMode"
+    <component :is="activeComponent" v-for="(item, index) in tab.tabs" :key="item.fullPath"
+      :is-active="tab.activeTab === item.fullPath" :primary-color="theme.themeColor"
+      :closable="!(item.name === tab.homeTab.name || item.meta.affix)" :dark-mode="theme.darkMode"
       :class="{ '!mr-0': isChromeMode && index === tab.tabs.length - 1, 'mr-10px': !isChromeMode }"
-      @click="tab.handleClickTab(item.fullPath)"
-      @close="tab.removeTab(item.fullPath)"
-      @contextmenu="handleContextMenu($event, item.fullPath, item.meta.affix)"
-    >
-      <svg-icon
-        :icon="item.meta.icon"
-        :local-icon="item.meta.localIcon"
-        class="inline-block align-text-bottom mr-4px text-16px"
-      />
+      @click="tab.handleClickTab(item.fullPath)" @close="tab.removeTab(item.fullPath)"
+      @contextmenu="handleContextMenu($event, item.fullPath, item.meta.affix)">
       {{ $t(item.meta.title) }}
     </component>
   </div>
-  <context-menu
-    :visible="dropdown.visible"
-    :current-path="dropdown.currentPath"
-    :affix="dropdown.affix"
-    :x="dropdown.x"
-    :y="dropdown.y"
-    @update:visible="handleDropdownVisible"
-  />
+  <context-menu :visible="dropdown.visible" :current-path="dropdown.currentPath" :affix="dropdown.affix" :x="dropdown.x"
+    :y="dropdown.y" @update:visible="handleDropdownVisible" />
 </template>
 
 <script setup lang="ts">

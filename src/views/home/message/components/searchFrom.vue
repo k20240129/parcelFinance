@@ -2,12 +2,12 @@
   <div style="width: 100%">
     <n-grid x-gap="10" :cols="5">
       <n-gi>
-        <n-input v-model:value="model.payeeName" style="width: 90%" type="text" clearable placeholder="收款方名称"
+        <n-input v-model:value="model.payeeName" style="width: 97%" type="text" clearable placeholder="收款方名称"
           @change="getSearch()" />
       </n-gi>
       <n-gi>
         <n-button type="error" color="#FB4A4C" @click="getSearch()"> 查询 </n-button>
-        <n-button type="error" color="#FB4A4C" ghost style="margin-left: 20px" @click="getSearch(1)"> 重置 </n-button>
+        <n-button type="error" color="#FB4A4C" ghost style="margin-left: 12px" @click="getSearch(1)"> 重置 </n-button>
       </n-gi>
     </n-grid>
     <div class="border"></div>
@@ -39,6 +39,7 @@ const getSearch = (val?: number) => {
   width: 100%;
   opacity: 1;
   border: 1px dashed #E0E0E6;
-  margin: 20px 0 10px;
+  margin: 16px 0 16px;
+  opacity: 0.3;
 }
 </style>

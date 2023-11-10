@@ -1,6 +1,6 @@
 <template>
   <div>
-    <n-modal class="modal" v-model:show="props.priceShow" :show-icon="false" preset="dialog" title="历史价格"
+    <n-modal style="width: 70%;" v-model:show="props.priceShow" :show-icon="false" preset="dialog" title="历史价格"
       :auto-focus="false" :on-mask-click="cancel" :on-close="cancel">
       <KYTable ref="table" style="height: 45vh" :colums="tableColums.cl" :table-data="tableColums.data" :selection="false"
         :serial-number="false" :pagination-show="true" class="current" :total="FromSearch.total"
@@ -129,9 +129,5 @@ const cancel = () => {
 };
 </script>
 
-<style>
-.modal {
-  width: 70% !important;
-}
-</style>
+<style lang="scss" scoped></style>
 

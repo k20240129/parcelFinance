@@ -1,23 +1,36 @@
 <template>
   <div>
-    <n-modal class="modal" v-model:show="props.showModal" :show-icon="false" :width="600" preset="dialog" title="编辑"
+    <n-modal style="width: 70%;" v-model:show="props.showModal" :show-icon="false" :width="600" preset="dialog" title="编辑"
       :auto-focus="false" :on-mask-click="cancel" :on-close="cancel">
-      <KYTable ref="table" style="height: 45vh" :colums="tableColums.cl" :table-data="tableColums.data" :selection="false"
-        :serial-number="false" :pagination-show="false" class="current">
-        <template #priceEffectiveTime="scope">
-          <n-date-picker v-model:value="priceEffectiveTime" update-value-on-close type="daterange" :actions="['clear']"
-            clearable />
-        </template>
-        <template #priceOne="scope">
-          <n-input v-model:value="scope.row.priceOne" style="width: 90%" type="text" clearable />
-        </template>
-        <template #priceTwo="scope">
-          <n-input v-model:value="scope.row.priceTwo" style="width: 90%" type="text" clearable />
-        </template>
-        <template #priceContract="scope">
-          <UploadFile v-model:saveFileArr="file.files" :maxNum="1"></UploadFile>
-        </template>
-      </KYTable>
+      <n-form ref="formRef" :model="tableColums">
+        <KYTable ref="table" style="height: 45vh" :colums="tableColums.cl" :table-data="tableColums.data"
+          :selection="false" :serial-number="false" :pagination-show="false" class="current">
+          <template #priceEffectiveTime="scope">
+            <!-- <n-form-item path="priceEffectiveTime" :rule="formItemRule('请选择', ['blur', 'change'])">
+              <n-date-picker v-model:value="formData.priceEffectiveTime" update-value-on-close type="daterange"
+                :actions="['clear']" clearable />
+            </n-form-item> -->
+            <n-date-picker v-model:value="formData.priceEffectiveTime" update-value-on-close type="daterange"
+              :actions="['clear']" clearable />
+          </template>
+          <template #priceOne="scope">
+            <n-input v-model:value="scope.row.priceOne" style="width: 90%" type="text" clearable />
+            <!-- <n-form-item :path="`cl[${scope.index}].priceOne`" :rule="formItemRule('请输入', ['blur', 'change'], 'number')">
+              <n-input-number :show-button="false" v-model:value="tableColums.cl[scope.index]!.priceOne"
+                style="width: 90%" type="text" clearable />
+            </n-form-item> -->
+          </template>
+          <template #priceTwo="scope">
+            <n-input v-model:value="scope.row.priceTwo" style="width: 90%" type="text" clearable />
+            <!-- <n-form-item path="priceTwo" :rule="formItemRule('请输入', ['blur', 'change'])">
+              <n-input v-model:value="scope.row.priceTwo" style="width: 90%" type="text" clearable />
+            </n-form-item> -->
+          </template>
+          <template #priceContract="scope">
+            <UploadFile v-model:saveFileArr="file.files" :maxNum="1" @clearemits="clearemits"></UploadFile>
+          </template>
+        </KYTable>
+      </n-form>
       <template #action>
         <n-button class="M_r_10" @click="cancel"> 取消 </n-button>
         <n-button type="success" @click="submitCallback"> 确认 </n-button>
@@ -28,11 +41,12 @@
 
 <script setup lang="ts">
 import { reactive, ref, defineEmits, defineProps, watch, getCurrentInstance } from 'vue';
-import { AddFinancialStatementDetails, UpdatePriceList } from '@/service';
+import { UpdatePriceList } from '@/service';
 import useMousePosition from '@/hooks/common/validation';
 import UploadFile from '@/components/UploadFile/UploadFile.vue';
 import moment from "moment";
 import { useMessage } from 'naive-ui'
+const { formItemRule } = useMousePosition();
 
 const emit = defineEmits(['cencelpricebtn']);
 const proxy = getCurrentInstance()?.proxy as any;
@@ -52,20 +66,19 @@ const props = defineProps({
     default: () => { }
   },
 })
-const priceEffectiveTime = ref(null) as any
 const formRef = ref<any>(null);
 const file = reactive({
   files: []
 })
+const formData = reactive<any>({
+  priceEffectiveTime: null as any,
+  priceOne: null,
+  priceTwo: null,
+  priceContract: null
+})
 // 表格参数
 const tableColums = reactive({
   cl: [
-    {
-      minWidth: '280',
-      prop: 'priceContract',
-      label: '价格合同',
-      slot: 'priceContract'
-    },
     {
       minWidth: '170',
       prop: 'payeeName',
@@ -109,27 +122,44 @@ const tableColums = reactive({
       label: '单价2',
       slot: 'priceTwo'
     },
-  ],
+    {
+      minWidth: '280',
+      prop: 'priceContract',
+      label: '价格合同',
+      slot: 'priceContract'
+    },
+  ] as any,
   data: [] as any
 });
 
 // 保存
 const submitCallback = async () => {
-  const { data } = await UpdatePriceList([{
-    ...tableColums.data[0],
-    priceSentime: priceEffectiveTime.value[0].toString(),
-    priceEndtime: priceEffectiveTime.value[1].toString(),
-    priceOne: Number(tableColums.data[0].priceOne),
-    priceTwo: Number(tableColums.data[0].priceTwo),
-    priceContract: JSON.stringify(file.files)
-  }]);
-  if (data.code === 200) {
-    message.success(data.message)
-    emit('cencelpricebtn')
+  // formRef.value?.validate(async error => {
+  //   if (error) return;
+  //   console.log(111);
+  // });
+  if (Array.isArray(file.files) && file.files.length > 0) {
+    const { data } = await UpdatePriceList([{
+      ...tableColums.data[0],
+      priceSentime: formData.priceEffectiveTime[0].toString(),
+      priceEndtime: formData.priceEffectiveTime[1].toString(),
+      priceOne: Number(tableColums.data[0].priceOne),
+      priceTwo: Number(tableColums.data[0].priceTwo),
+      priceContract: JSON.stringify(file.files)
+    }]);
+    if (data.code === 200) {
+      message.success(data.message)
+      emit('cencelpricebtn')
+    } else {
+      message.error(data.message)
+    }
   } else {
-    message.error(data.message)
+    message.error("请上传合同！")
   }
 };
+const clearemits = () => {
+  file.files = []
+}
 watch(() => props.editdata,
   (val) => {
     if (Object.keys(val).length !== 0) {
@@ -138,7 +168,7 @@ watch(() => props.editdata,
       const dates = val.priceEffectiveTime.split('-');
       const startDate = new Date(dates[0]).getTime();
       const endDate = new Date(dates[1]).getTime();
-      priceEffectiveTime.value = [startDate, endDate];
+      formData.priceEffectiveTime = [startDate, endDate];
       if (val.priceContract) {
         file.files = JSON.parse(val.priceContract)
       }
@@ -154,8 +184,4 @@ const cancel = () => {
 };
 </script>
 
-<style>
-.modal {
-  width: 70% !important;
-}
-</style>
+<style lang="scss" scoped></style>

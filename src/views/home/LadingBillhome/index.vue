@@ -5,7 +5,7 @@
       <tabs :tablist="tablist" @tabsemit="getTable" />
     </n-card>
     <n-card class="shadow-sm rounded-16px">
-      <KYTable ref="table" style="height: calc(100vh - 350px)" :colums="tableColums.cl" :table-data="tableColums.data"
+      <KYTable ref="table" style="height: calc(100vh - 348px)" :colums="tableColums.cl" :table-data="tableColums.data"
         :total="FromSearch.total" :selection="false" :serial-number="false" :pagination-show="true" class="current"
         @page-change="pageChange($event)" @size-change="sizeChange($event)" :operationWidth="200">
         <template #billType="scope">
@@ -19,19 +19,19 @@
           <div v-else>--</div>
         </template>
         <template #operation="scope">
-          <n-button color="#FB4A4C" size="small" quaternary @click="gobill(0, scope.row.id)"
+          <n-button color="#0256ff" size="small" quaternary @click="gobill(0, scope.row.id)"
             v-if="scope.row.billStatus === 0">
             去对账
           </n-button>
-          <n-button color="#FB4A4C" size="small" quaternary @click="gobill(2, scope.row.id)"
+          <n-button color="#0256ff" size="small" quaternary @click="gobill(2, scope.row.id)"
             v-if="scope.row.billStatus === 1">
             编辑
           </n-button>
-          <n-button color="#FB4A4C" size="small" quaternary @click="gobill(1, scope.row.id)"
+          <n-button color="#0256ff" size="small" quaternary @click="gobill(1, scope.row.id)"
             v-if="scope.row.billStatus === 1 || scope.row.billStatus === 2">
             详情
           </n-button>
-          <n-button color="#FB4A4C" size="small" quaternary @click="download(scope.row)"
+          <n-button color="#0256ff" size="small" quaternary @click="download(scope.row)"
             v-if="scope.row.billStatus === 1 || scope.row.billStatus === 2">
             下载
           </n-button>
@@ -113,7 +113,7 @@ const tableColums = reactive({
   data: [] as any
 });
 let model = reactive({
-  billLadingNo: null,
+  bilNumber: null,
   payee: null,
   billTime: null,
 });
@@ -197,6 +197,6 @@ getTable();
 }
 
 .scerch {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 </style>

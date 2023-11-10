@@ -15,7 +15,7 @@ export default [
 				component: "self",
 				meta: {
 					title: "应付帐单",
-					localIcon: "circum_pause-1",
+					localIcon: "dot",
 					requiresAuth: true,
 					hide: false,
 					keepAlive: false,
@@ -27,7 +27,7 @@ export default [
 				component: "self",
 				meta: {
 					title: "对账详情",
-					localIcon: "circum_pause-1",
+					localIcon: "dot",
 					requiresAuth: true,
 					hide: true,
 					keepAlive: false,
@@ -39,7 +39,7 @@ export default [
 				component: "self",
 				meta: {
 					title: "服务费列表",
-					localIcon: "circum_align-center-v",
+					localIcon: "dot",
 					requiresAuth: false,
 					hide: false,
 					keepAlive: false,
