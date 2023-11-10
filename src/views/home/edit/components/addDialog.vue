@@ -89,7 +89,7 @@ const nextstep = () => {
     if (error) return;
     const loading = proxy?.$loading({
       lock: true,
-      text: '查询中...',
+      text: '加载中...',
       background: 'rgba(0, 0, 0, 0.7)'
     });
     const { data } = await SelectFinancialStatementDetails({

@@ -92,7 +92,7 @@ const tableColums = reactive({
 const getTable = async () => {
   const loading = proxy?.$loading({
     lock: true,
-    text: '查询中...',
+    text: '加载中...',
     background: 'rgba(0, 0, 0, 0.7)'
   });
   const { data } = await QueryHistoryPrice({ ...FromSearch, priceId: props.pricerow.id })

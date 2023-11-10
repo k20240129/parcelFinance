@@ -109,7 +109,8 @@ import {
   QueryFinancialStatementDetails,
   QueryFinancialStatement,
   DeleteFinancialStatementDetails,
-  AddAndUpdateIFinancialStatement
+  AddAndUpdateIFinancialStatement,
+  QueryFinancial
 } from '@/service';
 import KYTable from '@/components/KY-table/KY-table.vue';
 const message = useMessage()
@@ -175,13 +176,13 @@ const tableColums = reactive({
 
 //基础信息
 const getinformation = async () => {
-  const { data } = await QueryFinancialStatement({ id: Number(route.query.id) });
-  model.value = data.data[0]
+  const { data } = await QueryFinancial(Number(route.query.id));
+  model.value = data
 }
 const getTable = async () => {
   const loading = proxy?.$loading({
     lock: true,
-    text: '查询中...',
+    text: '加载中...',
     background: 'rgba(0, 0, 0, 0.7)'
   });
   const { data } = await QueryFinancialStatementDetails({

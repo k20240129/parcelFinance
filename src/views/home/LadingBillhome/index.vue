@@ -122,7 +122,7 @@ const getTable = async (val?: number) => {
   activeTabs.value = val
   const loading = proxy?.$loading({
     lock: true,
-    text: '查询中...',
+    text: '加载中...',
     background: 'rgba(0, 0, 0, 0.7)'
   });
   const { data } = await QueryFinancialStatement({ ...model, ...FromSearch, status: activeTabs.value });

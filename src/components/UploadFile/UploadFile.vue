@@ -2,7 +2,8 @@
   <!-- 公共文件上传组件，包含图片、文件等 -->
   <div class="uploadPage">
     <n-upload v-if="listType == 'image-card'" v-model:file-list="fileList" :accept="fileType" :list-type="listType"
-      directory-dnd :max="maxNum" show-preview-button show-download-button :disabled="disabledIs" @change="changeFile">
+      directory-dnd :max="maxNum" show-preview-button show-download-button :disabled="disabledIs" @change="changeFile"
+      :show-retry-button="false">
       {{ $t('packageShopMessage.uploadFiles') }}
     </n-upload>
     <n-upload v-else v-model:file-list="fileList" :accept="fileType" :list-type="listType" directory-dnd :max="maxNum"

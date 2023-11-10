@@ -37,7 +37,7 @@
     </n-card>
     <AddAndUpdate :showModal="showModal" @cencelpricebtn="cencelbtn(1)" :editdata="editdata" />
     <PriceDialog :priceShow="priceShow" @cencelprice="cencelbtn(2)" :pricerow="pricerow" />
-    <BatchEdit :BatchEditshow="BatchEditshow" @cencelbtn="cencelbtn(3)" :editdata="batckedit" />
+    <BatchEdit :BatchEditshow="BatchEditshow" @cencelbtn="cencelbtn(3)" :batckedit="batckedit" />
     <ToChannel :tochannelshow="tochannelshow" @cencelbtn="cencelbtn(4)" />
   </div>
 </template>
@@ -149,7 +149,7 @@ const getTable = async (val?: number) => {
   activeTabs.value = val
   const loading = proxy?.$loading({
     lock: true,
-    text: '查询中...',
+    text: '加载中...',
     background: 'rgba(0, 0, 0, 0.7)'
   });
   const { data } = await QueryPriceList({ ...model, ...FromSearch, priceHotel: activeTabs.value });
@@ -186,7 +186,6 @@ const cencelbtn = (val: number) => {
     case 3:
       BatchEditshow.value = false
       table.value!.clearSelection()
-      batckedit.value = []
       getTable();
       break;
     case 4:
@@ -197,7 +196,7 @@ const cencelbtn = (val: number) => {
 }
 //多选
 const handleSelectionChange = (row: any) => {
-  batckedit.value = row
+  batckedit.value = JSON.parse(JSON.stringify(row))
 }
 
 //编辑

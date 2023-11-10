@@ -101,7 +101,7 @@ const handleChange = (file: any) => {
   proxy?.$Utils.uplodPost('api/FinancialStatement/PriceListExcel', file.file.file).then((res: any) => {
     const loading = proxy?.$loading({
       lock: true,
-      text: '查询中...',
+      text: '加载中...',
       background: 'rgba(0, 0, 0, 0.7)'
     });
     if (res.code === 200) {
@@ -117,7 +117,7 @@ const arr = [{ time: '2023/10/3', age: 10 }, { time: '2023/10/5', age: 10 }]
 const submitCallback = async () => {
   const loading = proxy?.$loading({
     lock: true,
-    text: '查询中...',
+    text: '加载中...',
     background: 'rgba(0, 0, 0, 0.7)'
   });
   const updatedArr = tableColums.data.map(item => {

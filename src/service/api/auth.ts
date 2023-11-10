@@ -220,3 +220,11 @@ export function AddPriceListExcel(data: any) {
 		data,
 	});
 }
+
+//上传保存添加价格信息
+export function QueryFinancial(id: number) {
+	return mockRequest({
+		url: `/api/FinancialStatement/QueryFinancial?id=${id}`,
+		method: "get",
+	});
+}

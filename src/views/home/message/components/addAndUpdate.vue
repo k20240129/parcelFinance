@@ -6,25 +6,22 @@
         <KYTable ref="table" style="height: 45vh" :colums="tableColums.cl" :table-data="tableColums.data"
           :selection="false" :serial-number="false" :pagination-show="false" class="current">
           <template #priceEffectiveTime="scope">
-            <!-- <n-form-item path="priceEffectiveTime" :rule="formItemRule('请选择', ['blur', 'change'])">
-              <n-date-picker v-model:value="formData.priceEffectiveTime" update-value-on-close type="daterange"
+            <n-form-item :path="`data[0].priceEffectiveTime`" :rule="formItemRule('请选择', ['blur', 'change'], 'array')">
+              <n-date-picker v-model:value="scope.row.priceEffectiveTime" update-value-on-close type="daterange"
                 :actions="['clear']" clearable />
-            </n-form-item> -->
-            <n-date-picker v-model:value="formData.priceEffectiveTime" update-value-on-close type="daterange"
-              :actions="['clear']" clearable />
+            </n-form-item>
           </template>
           <template #priceOne="scope">
-            <n-input v-model:value="scope.row.priceOne" style="width: 90%" type="text" clearable />
-            <!-- <n-form-item :path="`cl[${scope.index}].priceOne`" :rule="formItemRule('请输入', ['blur', 'change'], 'number')">
-              <n-input-number :show-button="false" v-model:value="tableColums.cl[scope.index]!.priceOne"
-                style="width: 90%" type="text" clearable />
-            </n-form-item> -->
+            <n-form-item :path="`data[0].priceOne`" :rule="formItemRule('请输入', ['blur', 'change'], 'number')">
+              <n-input-number :show-button="false" v-model:value="scope.row.priceOne" style="width: 90%" type="text"
+                clearable />
+            </n-form-item>
           </template>
           <template #priceTwo="scope">
-            <n-input v-model:value="scope.row.priceTwo" style="width: 90%" type="text" clearable />
-            <!-- <n-form-item path="priceTwo" :rule="formItemRule('请输入', ['blur', 'change'])">
-              <n-input v-model:value="scope.row.priceTwo" style="width: 90%" type="text" clearable />
-            </n-form-item> -->
+            <n-form-item :path="`data[0].priceTwo`" :rule="formItemRule('请输入', ['blur', 'change'], 'number')">
+              <n-input-number :show-button="false" v-model:value="scope.row.priceTwo" style="width: 90%" type="text"
+                clearable />
+            </n-form-item>
           </template>
           <template #priceContract="scope">
             <UploadFile v-model:saveFileArr="file.files" :maxNum="1" @clearemits="clearemits"></UploadFile>
@@ -69,12 +66,6 @@ const props = defineProps({
 const formRef = ref<any>(null);
 const file = reactive({
   files: []
-})
-const formData = reactive<any>({
-  priceEffectiveTime: null as any,
-  priceOne: null,
-  priceTwo: null,
-  priceContract: null
 })
 // 表格参数
 const tableColums = reactive({
@@ -134,28 +125,35 @@ const tableColums = reactive({
 
 // 保存
 const submitCallback = async () => {
-  // formRef.value?.validate(async error => {
-  //   if (error) return;
-  //   console.log(111);
-  // });
-  if (Array.isArray(file.files) && file.files.length > 0) {
-    const { data } = await UpdatePriceList([{
-      ...tableColums.data[0],
-      priceSentime: formData.priceEffectiveTime[0].toString(),
-      priceEndtime: formData.priceEffectiveTime[1].toString(),
-      priceOne: Number(tableColums.data[0].priceOne),
-      priceTwo: Number(tableColums.data[0].priceTwo),
-      priceContract: JSON.stringify(file.files)
-    }]);
-    if (data.code === 200) {
-      message.success(data.message)
-      emit('cencelpricebtn')
+  formRef.value?.validate(async error => {
+    if (error) return;
+    if (Array.isArray(file.files) && file.files.length > 0) {
+      console.log(tableColums.data[0]);
+      const loading = proxy?.$loading({
+        lock: true,
+        text: '加载中...',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      const { data } = await UpdatePriceList([{
+        ...tableColums.data[0],
+        priceSentime: tableColums.data[0].priceEffectiveTime.toString(),
+        priceEndtime: tableColums.data[0].priceEffectiveTime.toString(),
+        priceEffectiveTime: "",
+        priceOne: Number(tableColums.data[0].priceOne),
+        priceTwo: Number(tableColums.data[0].priceTwo),
+        priceContract: JSON.stringify(file.files)
+      }]);
+      if (data.code === 200) {
+        message.success(data.message)
+        emit('cencelpricebtn')
+      } else {
+        message.error(data.message)
+      }
+      loading.close();
     } else {
-      message.error(data.message)
+      message.error("请上传合同！")
     }
-  } else {
-    message.error("请上传合同！")
-  }
+  });
 };
 const clearemits = () => {
   file.files = []
@@ -165,10 +163,9 @@ watch(() => props.editdata,
     if (Object.keys(val).length !== 0) {
       tableColums.data = []
       tableColums.data.push(val)
-      const dates = val.priceEffectiveTime.split('-');
-      const startDate = new Date(dates[0]).getTime();
-      const endDate = new Date(dates[1]).getTime();
-      formData.priceEffectiveTime = [startDate, endDate];
+      const startDate = new Date(val.priceEffectiveTime.split('-')[0]).getTime();
+      const endDate = new Date(val.priceEffectiveTime.split('-')[1]).getTime();
+      tableColums.data[0].priceEffectiveTime = [startDate, endDate];
       if (val.priceContract) {
         file.files = JSON.parse(val.priceContract)
       }
