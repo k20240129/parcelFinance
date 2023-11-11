@@ -8,15 +8,17 @@
           <n-input v-model:value="formData.businessNumber" type="text" placeholder="请输入业务单号" />
         </n-form-item>
       </n-form>
-      <n-form ref="formRef" label-width="130" label-placement="left" v-if="switchover">
+      <n-form ref="formRef" label-width="130" label-placement="left" v-if="switchover" label-align="left">
         <n-form-item label="计费单号：">
-          {{ formData.billCode }}
+          {{ formData.billCdoe }}
         </n-form-item>
         <n-form-item label="业务单号：">
           {{ formData.businessNumber }}
         </n-form-item>
         <n-form-item label="计费类型：">
-          {{ formData.billType }}
+          <span v-if="formData.billType === 1">签收费用</span>
+          <span v-else-if="formData.billType === 2">拒收费用</span>
+          <span v-else>--</span>
         </n-form-item>
         <n-form-item label="计费日期：">
           {{ formData.billTime }}
@@ -37,7 +39,7 @@
           <n-button class="M_r_10" @click="cancel"> 取消 </n-button>
         </div>
         <div v-if="switchover">
-          <n-button type="success" @click="submitCallback"> 确认 </n-button>
+          <n-button type="error" @click="submitCallback"> 确认 </n-button>
           <n-button class="M_r_10" @click="switchover = false"> 上一步 </n-button>
         </div>
       </template>
@@ -67,14 +69,6 @@ const props = defineProps({
     default: 1
   },
 })
-const options = ref([{
-  label: '签收费用',
-  value: 1
-},
-{
-  label: '拒收费用',
-  value: 2
-}])
 
 const { formItemRule } = useMousePosition();
 const formRef = ref<any>(null);
@@ -93,8 +87,11 @@ const nextstep = () => {
       background: 'rgba(0, 0, 0, 0.7)'
     });
     const { data } = await SelectFinancialStatementDetails({
-      businessNumber: formData.businessNumber, financialStatementId: Number(props.financialStatementId)
+      businessNumber: formData.businessNumber,
+      financialStatementId: Number(props.financialStatementId),
+      billingType: props.activesty
     });
+    console.log(data);
     if (data.code === 200) {
       Object.assign(formData, toRefs(data.data));
       switchover.value = true
@@ -141,4 +138,8 @@ const cancel = () => {
 };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.n-form-item {
+  height: 50px;
+}
+</style>

@@ -136,8 +136,8 @@ const submitCallback = async () => {
       });
       const { data } = await UpdatePriceList([{
         ...tableColums.data[0],
-        priceSentime: tableColums.data[0].priceEffectiveTime.toString(),
-        priceEndtime: tableColums.data[0].priceEffectiveTime.toString(),
+        priceSentime: moment(tableColums.data[0].priceEffectiveTime[0]).format("YYYY-MM-DD"),
+        priceEndtime: moment(tableColums.data[0].priceEffectiveTime[1]).format("YYYY-MM-DD"),
         priceEffectiveTime: "",
         priceOne: Number(tableColums.data[0].priceOne),
         priceTwo: Number(tableColums.data[0].priceTwo),
@@ -159,13 +159,15 @@ const clearemits = () => {
   file.files = []
 }
 watch(() => props.editdata,
-  (val) => {
+  (val: any) => {
     if (Object.keys(val).length !== 0) {
       tableColums.data = []
       tableColums.data.push(val)
       const startDate = new Date(val.priceEffectiveTime.split('-')[0]).getTime();
       const endDate = new Date(val.priceEffectiveTime.split('-')[1]).getTime();
       tableColums.data[0].priceEffectiveTime = [startDate, endDate];
+      tableColums.data[0].priceOne = Number(val.priceOne)
+      tableColums.data[0].priceTwo = Number(val.priceTwo)
       if (val.priceContract) {
         file.files = JSON.parse(val.priceContract)
       }

@@ -43,6 +43,7 @@ import { reactive, ref, defineEmits, defineProps, watch, getCurrentInstance } fr
 import { UpdatePriceList } from '@/service';
 import useMousePosition from '@/hooks/common/validation';
 import { useMessage } from 'naive-ui'
+import moment from "moment";
 
 const emit = defineEmits(['cencelbtn']);
 const { formItemRule } = useMousePosition();
@@ -100,17 +101,22 @@ const tableColums = reactive({
 });
 // 保存
 const submitCallback = async () => {
-  formRef.value?.validate(async error => {
+  formRef.value?.validate(async (error: any) => {
     if (error) return;
-    props.batckedit.forEach((item: any) => {
-      item.priceSentime = JSON.stringify(tableColums.data[0].priceEffectiveTime[0])
-      item.priceEndtime = JSON.stringify(tableColums.data[0].priceEffectiveTime[1])
-      item.priceOne = Number(tableColums.data[0].priceOne)
-      item.priceTwo = Number(tableColums.data[0].priceTwo)
-      item.priceEffectiveTime = ''
+    // 输出更改后的数组
+    var priceEffectiveTime = tableColums.data[0].priceEffectiveTime;
+    var priceOne = Number(tableColums.data[0].priceOne);
+    var priceTwo = Number(tableColums.data[0].priceTwo);
+    props.batckedit.forEach((item: any, index: number) => {
+      console.log(item.priceSentime);
+      item.priceSentime = moment(priceEffectiveTime[0]).format("YYYY-MM-DD");
+      item.priceEndtime = moment(priceEffectiveTime[1]).format("YYYY-MM-DD");
+      item.priceOne = priceOne;
+      item.priceTwo = priceTwo;
+      item.priceEffectiveTime = '';
     });
+    console.log('批量', props.batckedit);
     const { data } = await UpdatePriceList(props.batckedit);
-    console.log(data);
     if (data.code === 200) {
       message.success(data.message)
       emit('cencelbtn')
@@ -120,7 +126,7 @@ const submitCallback = async () => {
   });
 };
 watch(() => props.batckedit,
-  (val) => {
+  (val: any) => {
     if (Array.isArray(val) && val.length > 0) {
       tableColums.data = []
       tableColums.data.push(val[0])
@@ -128,6 +134,8 @@ watch(() => props.batckedit,
       const startDate = new Date(val[0].priceEffectiveTime.split('-')[0]).getTime();
       const endDate = new Date(val[0].priceEffectiveTime.split('-')[1]).getTime();
       tableColums.data[0].priceEffectiveTime = [startDate, endDate];
+      tableColums.data[0].priceOne = Number(val[0].priceOne)
+      tableColums.data[0].priceTwo = Number(val[0].priceTwo)
     }
   },
   { immediate: true }

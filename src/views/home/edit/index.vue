@@ -33,7 +33,9 @@
             </n-gi>
             <n-gi>
               <n-form-item label="账单类型：">
-                {{ model.billType }}
+                <span v-if="model.billType === 1">签收费用</span>
+                <span v-else-if="model.billType === 2">拒收费用</span>
+                <span v-else>--</span>
               </n-form-item>
             </n-gi> <n-gi>
               <n-form-item label="账单时间：">
@@ -46,7 +48,7 @@
               </n-form-item>
             </n-gi> <n-gi>
               <n-form-item label="账单金额：">
-                {{ model.billAmount }}
+                {{ model.billAmount }}$
               </n-form-item>
             </n-gi>
             <n-gi>
@@ -67,7 +69,7 @@
         <div style="margin-left: 12px;" :class="activesty === 2 ? 'activestyly' : ''" @click="qiehuan(2)">拒收费用</div>
       </div>
       <div class="cost"> <span v-if="activesty === 1">签收费用</span><span v-if="activesty === 2">拒收费用</span> ：共{{
-        bill.countnum }}条数据，计费总金额：${{ bill.money }}
+        bill.count }}条数据，计费总金额：${{ bill.money }}
         <n-button ghost type="error" @click="addparty" v-if="route.query.type !== '1'">
           + 新增一行
         </n-button>
@@ -87,7 +89,8 @@
           </n-button>
         </template>
       </KYTable>
-      <div class="cost postionab">账单总金额，即签收与拒收费用总计：共{{ bill.listcount }}条数据，计费总金额：${{ bill.listMoeny }}</div>
+      <div class="cost postionab">账单总金额，即签收与拒收费用总计：共{{ model.financialStatementDetailCount }}条数据，计费总金额：${{
+        model.financialStatementDetailAmount }}</div>
       <div class="cost btntijiao" v-if="route.query.type !== '1'">
         <n-button type="error" color="#FB4A4C" @click="submitbill">
           提交账单
@@ -109,7 +112,7 @@ import {
   QueryFinancialStatementDetails,
   QueryFinancialStatement,
   DeleteFinancialStatementDetails,
-  AddAndUpdateIFinancialStatement,
+  UpdateFinancialStatementEntity,
   QueryFinancial
 } from '@/service';
 import KYTable from '@/components/KY-table/KY-table.vue';
@@ -125,7 +128,7 @@ const proxy = getCurrentInstance()?.proxy as any;
 const FromSearch = reactive({
   pageSize: 10,
   pageIndex: 1,
-  total: null
+  total: 0
 });
 const options = ref([{
   label: '包裹店应付',
@@ -176,8 +179,10 @@ const tableColums = reactive({
 
 //基础信息
 const getinformation = async () => {
-  const { data } = await QueryFinancial(Number(route.query.id));
-  model.value = data
+  const { data } = await QueryFinancialStatement({
+    id: Number(route.query.id)
+  });
+  model.value = data.data[0]
 }
 const getTable = async () => {
   const loading = proxy?.$loading({
@@ -189,8 +194,10 @@ const getTable = async () => {
     ...FromSearch, billingType: activesty.value, financialStatementId: Number(route.query.id)
   })
   bill.value = data
-  tableColums.data = data.response.data
-  FromSearch.total = data.response.total;
+  if (data.response?.code === 200) {
+    tableColums.data = data.response.data
+    FromSearch.total = data.response.total;
+  }
   loading.close();
 }
 
@@ -198,7 +205,7 @@ const getTable = async () => {
 const getback = () => {
   router.push({
     path: '/home/LadingBillhome',
-  })
+  })//
 }
 //下载账单
 const downloadbill = async () => {
@@ -207,7 +214,7 @@ const downloadbill = async () => {
 //提交账单
 const submitbill = async () => {
   //状态只能为待确认
-  const { data } = await AddAndUpdateIFinancialStatement({ id: route.query.id, billStatus: 1 })
+  const { data } = await UpdateFinancialStatementEntity({ id: route.query.id, billStatus: 1 })
   console.log(data);
   if (data.code === 200) {
     message.success(data.message)

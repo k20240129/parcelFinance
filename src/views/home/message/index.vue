@@ -203,10 +203,10 @@ const handleSelectionChange = (row: any) => {
 const cliedit = async (row: any, type: number) => {
   if (type === 1) {
     showModal.value = true
-    editdata.value = row
+    editdata.value = JSON.parse(JSON.stringify(row))
   } else {
     priceShow.value = true
-    pricerow.value = row
+    pricerow.value = JSON.parse(JSON.stringify(row))
   }
 }
 // 查询

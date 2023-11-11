@@ -7,13 +7,15 @@
         @page-change="pageChange($event)" @size-change="sizeChange($event)">
         <template #priceContract="scope">
           <div v-if="scope.row.priceContract">
-            <a :href="scope.row.priceContract[0]?.url" target="_blank">{{ scope.row.priceContract[0]?.name }}</a>
+            <a v-if="scope.row.priceContract[0]?.url" :href="scope.row.priceContract[0]?.url" target="_blank">{{
+              scope.row.priceContract[0]?.name }}</a>
           </div>
+          <span v-else> &nbsp; --</span>
         </template>
       </KYTable>
       <template #action>
         <n-button class="M_r_10" @click="cancel"> 取消 </n-button>
-        <n-button type="success" @click="cancel"> 确认 </n-button>
+        <n-button type="error" color="#FB4A4C" @click="cancel"> 确认 </n-button>
       </template>
     </n-modal>
   </div>
@@ -129,5 +131,9 @@ const cancel = () => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+a {
+  color: #0256FF;
+}
+</style>
 

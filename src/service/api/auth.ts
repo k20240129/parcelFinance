@@ -139,9 +139,9 @@ export function QueryFinancialStatementDetails(data: any) {
 }
 
 //添加账单
-export function AddAndUpdateIFinancialStatement(data: any) {
+export function UpdateFinancialStatementEntity(data: any) {
 	return mockRequest({
-		url: "/api/FinancialStatement/AddAndUpdateIFinancialStatement",
+		url: "/api/FinancialStatement/UpdateFinancialStatementEntity",
 		method: "post",
 		data,
 	});

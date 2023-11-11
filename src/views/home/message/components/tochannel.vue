@@ -127,8 +127,6 @@ const submitCallback = async () => {
     const formattedDate2 = dateParts2.join('-');
     return { ...item, priceEffectiveEndtime: formattedDate2, priceEffectiveSentime: formattedDate };
   });
-
-  console.log(updatedArr);
   const { data } = await AddPriceListExcel(updatedArr);
   if (data.code === 200) {
     message.success(data.message)
