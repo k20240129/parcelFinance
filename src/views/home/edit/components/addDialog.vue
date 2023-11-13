@@ -16,8 +16,8 @@
           {{ formData.businessNumber }}
         </n-form-item>
         <n-form-item label="计费类型：">
-          <span v-if="formData.billType === 1">签收费用</span>
-          <span v-else-if="formData.billType === 2">拒收费用</span>
+          <span v-if="formData.billingType === 1">包裹店签收费用</span>
+          <span v-else-if="formData.billingType === 2">包裹店拒收费用</span>
           <span v-else>--</span>
         </n-form-item>
         <n-form-item label="计费日期：">
@@ -27,10 +27,10 @@
           {{ formData.billWeight }}
         </n-form-item>
         <n-form-item label="单价/USD：">
-          {{ formData.billPrice }}
+          ${{ formData.billPrice }}
         </n-form-item>
         <n-form-item label="计费金额/USD：">
-          {{ formData.billAmount }}
+          ${{ formData.billAmount }}
         </n-form-item>
       </n-form>
       <template #action>

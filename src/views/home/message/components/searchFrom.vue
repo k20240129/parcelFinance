@@ -2,7 +2,7 @@
   <div style="width: 100%">
     <n-grid x-gap="10" :cols="5">
       <n-gi>
-        <n-input v-model:value="model.payeeName" style="width: 97%" type="text" clearable placeholder="收款方名称"
+        <n-input v-model:value="model.payeeName" style="width: 97%" type="text" clearable placeholder="收款方名称/收款方编码"
           @change="getSearch()" />
       </n-gi>
       <n-gi>
