@@ -5,6 +5,12 @@
       <KYTable ref="table" style="height: 45vh" :colums="tableColums.cl" :table-data="tableColums.data" :selection="false"
         :serial-number="false" :pagination-show="true" class="current" :total="FromSearch.total"
         @page-change="pageChange($event)" @size-change="sizeChange($event)">
+        <template #priceOne="scope">
+          ${{ scope.row.priceOne }}
+        </template>
+        <template #priceTwo="scope">
+          ${{ scope.row.priceTwo }}
+        </template>
         <template #priceContract="scope">
           <div v-if="scope.row.priceContract">
             <a v-if="scope.row.priceContract[0]?.url" :href="scope.row.priceContract[0]?.url" target="_blank">{{
@@ -66,6 +72,7 @@ const tableColums = reactive({
       minWidth: '80',
       prop: 'priceOne',
       label: '单价1',
+      slot: 'priceOne'
     },
     {
       minWidth: '140',
@@ -76,6 +83,7 @@ const tableColums = reactive({
       minWidth: '80',
       prop: 'priceTwo',
       label: '单价2',
+      slot: 'priceTwo'
     },
     {
       minWidth: '280',
@@ -84,7 +92,7 @@ const tableColums = reactive({
       slot: 'priceContract'
     },
     {
-      minWidth: '120',
+      minWidth: '180',
       prop: 'updateTime',
       label: '更新日期',
     },

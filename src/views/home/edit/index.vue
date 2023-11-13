@@ -1,11 +1,11 @@
 <template>
   <div class="box">
     <div class="getback">
-      <span v-if="route.query.type == '0'">完善/编辑应付账单</span>
-      <span v-else-if="route.query.type == '1'">查看应付账单</span>
-      <span v-else-if="route.query.type == '2'">编辑应付账单</span>
+      <span v-if="route.query.type == '0'">完善对账单</span>
+      <span v-else-if="route.query.type == '1'">查看对账单</span>
+      <span v-else-if="route.query.type == '2'">编辑对账单</span>
       <div class="getbarksty">
-        <svg-icon local-icon="printbtn" style="width: 84px;height: 34px;" @click="downloadbill" />
+        <svg-icon local-icon="printbtn" style="width: 84px;height: 34px;cursor: pointer;" @click="downloadbill" />
         <n-button @click="getback" color="#F5F7FA" :text-color="'#333'" style="margin-left: 12px;">
           返回
         </n-button>
@@ -33,8 +33,7 @@
             </n-gi>
             <n-gi>
               <n-form-item label="账单类型：">
-                <span v-if="model.billType === 1">签收费用</span>
-                <span v-else-if="model.billType === 2">拒收费用</span>
+                <span v-if="model.billType === 1">包裹店应付</span>
                 <span v-else>--</span>
               </n-form-item>
             </n-gi> <n-gi>
@@ -48,7 +47,7 @@
               </n-form-item>
             </n-gi> <n-gi>
               <n-form-item label="账单金额：">
-                {{ model.billAmount }}$
+                ${{ model.billAmount }}
               </n-form-item>
             </n-gi>
             <n-gi>
@@ -77,14 +76,19 @@
       <KYTable ref="table" style="height: 22vh;" :loading="loading" :colums="tableColums.cl"
         :table-data="tableColums.data" :total="FromSearch.total" :selection="false" :serial-number="false"
         :pagination-show="true" class="current" @page-change="pageChange($event)" @size-change="sizeChange($event)">
+        <template #billAmount="scope">
+          ${{ scope.row.billAmount }}
+        </template>
+        <template #billPrice="scope">
+          ${{ scope.row.billPrice }}
+        </template>
         <template #billingType="scope">
           <div v-if="scope.row.billingType === 1">包裹店签收费用</div>
           <div v-else-if="scope.row.billingType === 2">包裹店拒收费用</div>
           <div v-else>--</div>
         </template>
-        <template #operation="scope">
-          <n-button type="error" size="small" quaternary :disabled="route.query.type == '1'"
-            @click="cliclear(scope.row.id)">
+        <template #operation="scope" v-if="route.query.type !== '1'">
+          <n-button type="error" size="small" text :disabled="route.query.type == '1'" @click="cliclear(scope.row.id)">
             删除
           </n-button>
         </template>
@@ -161,17 +165,19 @@ const tableColums = reactive({
     {
       minWidth: '180',
       prop: 'billWeight',
-      label: '计费重量/kg'
+      label: '计费重量/kg',
     },
     {
       minWidth: '180',
       prop: 'billPrice',
       label: '单价/USD',
+      slot: 'billPrice'
     },
     {
       minWidth: '180',
       prop: 'billAmount',
       label: '计费金额/USD',
+      slot: 'billAmount'
     },
   ],
   data: []
@@ -194,10 +200,8 @@ const getTable = async () => {
     ...FromSearch, billingType: activesty.value, financialStatementId: Number(route.query.id)
   })
   bill.value = data
-  if (data.response?.code === 200) {
-    tableColums.data = data.response.data
-    FromSearch.total = data.response.total;
-  }
+  tableColums.data = data.response?.data
+  FromSearch.total = data.response?.total;
   loading.close();
 }
 
@@ -237,6 +241,7 @@ const cliclear = async (id: number) => {
         message.success(res.data.message)
       }
       getTable();
+      getinformation()
     }
   });
 

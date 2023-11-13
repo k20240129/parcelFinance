@@ -4,7 +4,9 @@
       :date-locale="nactiveLangTime" class="h-full">
       <naive-provider>
         <n-message-provider>
-          <router-view />
+          <KeepAlive>
+            <router-view />
+          </KeepAlive>
         </n-message-provider>
       </naive-provider>
     </n-config-provider>

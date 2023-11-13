@@ -13,24 +13,24 @@
           </template>
           <template #priceOne="scope">
             <n-form-item :path="`data[0].priceOne`" :rule="formItemRule('请输入', ['blur', 'change'], 'number')">
-              <n-input-number :show-button="false" v-model:value="scope.row.priceOne" style="width: 90%" type="text"
+              $<n-input-number :show-button="false" v-model:value="scope.row.priceOne" style="width: 90%" type="text"
                 clearable />
             </n-form-item>
           </template>
           <template #priceTwo="scope">
             <n-form-item :path="`data[0].priceTwo`" :rule="formItemRule('请输入', ['blur', 'change'], 'number')">
-              <n-input-number :show-button="false" v-model:value="scope.row.priceTwo" style="width: 90%" type="text"
+              $<n-input-number :show-button="false" v-model:value="scope.row.priceTwo" style="width: 90%" type="text"
                 clearable />
             </n-form-item>
           </template>
           <template #priceContract="scope">
-            <UploadFile v-model:saveFileArr="file.files" :maxNum="1" @clearemits="clearemits"></UploadFile>
+            <UploadFile v-model:saveFileArr="file.files" :maxNum="1"></UploadFile>
           </template>
         </KYTable>
       </n-form>
       <template #action>
         <n-button class="M_r_10" @click="cancel"> 取消 </n-button>
-        <n-button type="success" @click="submitCallback"> 确认 </n-button>
+        <n-button type="error" color="#FB4A4C" @click="submitCallback"> 确认 </n-button>
       </template>
     </n-modal>
   </div>
@@ -114,7 +114,7 @@ const tableColums = reactive({
       slot: 'priceTwo'
     },
     {
-      minWidth: '280',
+      minWidth: '380',
       prop: 'priceContract',
       label: '价格合同',
       slot: 'priceContract'
@@ -155,9 +155,6 @@ const submitCallback = async () => {
     }
   });
 };
-const clearemits = () => {
-  file.files = []
-}
 watch(() => props.editdata,
   (val: any) => {
     if (Object.keys(val).length !== 0) {

@@ -5,7 +5,7 @@
       <div>
         <n-upload :default-upload="false" :directory-dnd="true" :show-file-list="false" accept=".xls,.xlsx" multiple
           @change="handleChange">
-          <n-upload-dragger style="width: 100%;padding: 0 35%;">
+          <n-upload-dragger style="width: 100%;padding: 15px 35%;">
             <svg-icon local-icon="uploading" style="font-size: 70px;margin: 0 auto;" />
             <div style="display: flex;flex-direction: column;" v-if="!tableshow">
               <n-button type="info" size="small" class="mr-2" style="margin: 15px;">上传文档</n-button>
@@ -25,7 +25,7 @@
       </KYTable>
       <template #action>
         <n-button class="M_r_10" @click="cancel"> 取消 </n-button>
-        <n-button type="error" @click="submitCallback"> 确认 </n-button>
+        <n-button type="error" color="#FB4A4C" @click="submitCallback"> 确认 </n-button>
       </template>
     </n-modal>
   </div>

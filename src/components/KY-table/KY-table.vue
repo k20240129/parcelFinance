@@ -14,7 +14,7 @@
             placement: 'top',
             hideAfter: 200
           }" :header-cell-style="{
-  background: '#F6F6F6'
+  'background': '#F6F6F6'
 }" :max-height="max_height" @row-contextmenu="rightClick" @select-all="selectAll" @sort-change="sortChange"
           @select="handSelect" @selection-change="handleSelectionChange" @getSelectionRows="getSelectionRows"
           @current-change="handleCurrentChange" @chikAll="chikAll" @row-click="RowClick">
@@ -58,7 +58,7 @@
             </el-table-column>
           </el-table-column>
           <el-table-column v-if="Object.keys(operationData).length || $slots.operation || $slots.operation" :label="label"
-            :width="operationWidth" align="center" fixed="right">
+            :width="operationWidth" :align="center" fixed="right">
             <!-- <div class="operation-row" :scope="scope"></div> -->
             <template #default="scope">
               <el-button v-if="operationData.edit && operationData.edit.show" icon="Edit" size="small" type="primary"

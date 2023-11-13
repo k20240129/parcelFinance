@@ -7,8 +7,8 @@
       {{ $t('packageShopMessage.uploadFiles') }}
     </n-upload>
     <n-upload v-else v-model:file-list="fileList" :accept="fileType" :list-type="listType" directory-dnd :max="maxNum"
-      show-preview-button show-download-button @change="changeFile">
-      <n-button @click="clearfile"> {{ $t('packageShopMessage.uploadFiles') }} </n-button>
+      show-preview-button show-download-button @change="changeFile" :show-retry-button="false">
+      <n-button color="#0256ff" type="info"> {{ $t('packageShopMessage.uploadFiles') }} </n-button>
     </n-upload>
   </div>
 </template>
@@ -85,12 +85,6 @@ export default {
         props.saveFileArr.splice(fileIndex, 1);
       }
     };
-    const clearfile = () => {
-      console.log(1, props.saveFileArr);
-      allData.fileList = [];
-      props.saveFileArr = []
-      emit('clearemits')
-    }
     onMounted(() => {
       // 修改时图片回显
       allData.fileList = [];
@@ -112,13 +106,24 @@ export default {
     return {
       ...toRefs(allData),
       changeFile,
-      clearfile
     };
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .uploadPage {
   width: 100%;
+}
+
+::v-deep(.n-upload-trigger + .n-upload-file-list) {
+  margin: 0;
+}
+
+:deep(.n-upload-file-list) {
+  padding: 0 !important;
+}
+
+::v-deep(.n-upload-file-list .n-upload-file.n-upload-file--with-url .n-upload-file-info .n-upload-file-info__name) {
+  color: #0256ff !important;
 }
 </style>

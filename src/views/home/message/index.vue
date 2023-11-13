@@ -7,7 +7,7 @@
     <n-card class="shadow-sm rounded-16px">
       <div style="margin-bottom: 16px;">
         <n-dropdown trigger="hover" :options="options" @select="handleSelect">
-          <n-button type="error" color="#FB4A4C" class="rotate-button">
+          <n-button type="error" color="#FB4A4C" icon-placement="right" class="rotate-button">
             <template #icon>
               <svg-icon local-icon="pull-down" style="font-size: 22px;" class="icon" />
             </template>
@@ -19,17 +19,24 @@
         :total="FromSearch.total" :serial-number="false" :selection="true" :pagination-show="true" class="current"
         @page-change="pageChange($event)" @size-change="sizeChange($event)"
         @handleSelectionChange="handleSelectionChange">
+        <template #priceOne="scope">
+          ${{ scope.row.priceOne }}
+        </template>
+        <template #priceTwo="scope">
+          ${{ scope.row.priceTwo }}
+        </template>
         <template #priceEffectiveTime="scope">
-          {{ scope.row.priceEffectiveTime }}
-          <n-button :type="scope.row.priceStatus == '无效' ? 'error' : 'success'" quaternary>
-            {{ scope.row.priceStatus }}
-          </n-button>
+          <div style="display: flex;align-items: center;">
+            <span>{{ scope.row.priceEffectiveTime }}</span>
+            <div :class="scope.row.priceStatus == '无效' ? 'redbtn' : 'greenbtn'" style="margin-left: 8px;">{{
+              scope.row.priceStatus }}</div>
+          </div>
         </template>
         <template #operation="scope">
-          <n-button color="#0256ff" type="info" quaternary @click="cliedit(scope.row, 1)">
+          <n-button color="#0256ff" type="info" text style="margin-right: 12px;" @click="cliedit(scope.row, 1)">
             编辑
           </n-button>
-          <n-button color="#0256ff" type="info" quaternary @click="cliedit(scope.row, 2)">
+          <n-button color="#0256ff" type="info" text @click="cliedit(scope.row, 2)">
             历史价格
           </n-button>
         </template>
@@ -127,6 +134,7 @@ const tableColums = reactive({
       minWidth: '120',
       prop: 'priceOne',
       label: '单价1',
+      slot: 'priceOne'
     },
     {
       minWidth: '160',
@@ -137,6 +145,7 @@ const tableColums = reactive({
       minWidth: '120',
       prop: 'priceTwo',
       label: '单价2',
+      slot: 'priceTwo'
     },
   ],
   data: []

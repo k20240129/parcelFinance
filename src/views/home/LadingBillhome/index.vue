@@ -12,6 +12,9 @@
           <div v-if="scope.row.billType === 1">包裹店应付</div>
           <div v-else>--</div>
         </template>
+        <template #billAmount="scope">
+          ${{ scope.row.billAmount }}
+        </template>
         <template #billStatus="scope">
           <div v-if="scope.row.billStatus === 0">待对账</div>
           <div v-else-if="scope.row.billStatus === 1">待确认</div>
@@ -19,19 +22,18 @@
           <div v-else>--</div>
         </template>
         <template #operation="scope">
-          <n-button color="#0256ff" size="small" quaternary @click="gobill(0, scope.row.id)"
-            v-if="scope.row.billStatus === 0">
+          <n-button text color="#0256ff" size="small" @click="gobill(0, scope.row.id)" v-if="scope.row.billStatus === 0">
             去对账
           </n-button>
-          <n-button color="#0256ff" size="small" quaternary @click="gobill(2, scope.row.id)"
+          <n-button style="margin-right: 12px;" color="#0256ff" size="small" text @click="gobill(2, scope.row.id)"
             v-if="scope.row.billStatus === 1">
             编辑
           </n-button>
-          <n-button color="#0256ff" size="small" quaternary @click="gobill(1, scope.row.id)"
+          <n-button style="margin-right: 12px;" color="#0256ff" size="small" text @click="gobill(1, scope.row.id)"
             v-if="scope.row.billStatus === 1 || scope.row.billStatus === 2">
             详情
           </n-button>
-          <n-button color="#0256ff" size="small" quaternary @click="download(scope.row)"
+          <n-button style="margin-right: 12px;" color="#0256ff" size="small" text @click="download(scope.row)"
             v-if="scope.row.billStatus === 1 || scope.row.billStatus === 2">
             下载
           </n-button>
@@ -62,8 +64,7 @@ const FromSearch = reactive({
   pageSize: 10,
   pageIndex: 1,
   total: null
-});//ZD-LPH-P-H20231111
-//GR16877727356
+});
 const tablist = ref([
   { name: '全部', id: -1 },
   { name: '待对账', id: 0 },
@@ -95,14 +96,16 @@ const tableColums = reactive({
       label: '收款方'
     },
     {
-      minWidth: '180',
+      minWidth: '100',
       prop: 'currency',
       label: '币种'
     },
     {
-      minWidth: '180',
+      minWidth: '100',
       prop: 'billAmount',
       label: '账单金额',
+      slot: 'billAmount',
+      // align: "right"
     },
     {
       minWidth: '180',

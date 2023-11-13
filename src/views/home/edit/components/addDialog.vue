@@ -39,7 +39,7 @@
           <n-button class="M_r_10" @click="cancel"> 取消 </n-button>
         </div>
         <div v-if="switchover">
-          <n-button type="error" @click="submitCallback"> 确认 </n-button>
+          <n-button type="error" color="#FB4A4C" @click="submitCallback"> 确认 </n-button>
           <n-button class="M_r_10" @click="switchover = false"> 上一步 </n-button>
         </div>
       </template>
