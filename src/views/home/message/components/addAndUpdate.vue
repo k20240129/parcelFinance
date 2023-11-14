@@ -135,10 +135,9 @@ const submitCallback = async () => {
         background: 'rgba(0, 0, 0, 0.7)'
       });
       const { data } = await UpdatePriceList([{
-        ...tableColums.data[0],
+        id: tableColums.data[0].id,
         priceSentime: moment(tableColums.data[0].priceEffectiveTime[0]).format("YYYY-MM-DD"),
         priceEndtime: moment(tableColums.data[0].priceEffectiveTime[1]).format("YYYY-MM-DD"),
-        priceEffectiveTime: "",
         priceOne: Number(tableColums.data[0].priceOne),
         priceTwo: Number(tableColums.data[0].priceTwo),
         priceContract: JSON.stringify(file.files)

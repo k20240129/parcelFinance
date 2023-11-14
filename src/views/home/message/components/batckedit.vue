@@ -107,21 +107,24 @@ const submitCallback = async () => {
     var priceEffectiveTime = tableColums.data[0].priceEffectiveTime;
     var priceOne = Number(tableColums.data[0].priceOne);
     var priceTwo = Number(tableColums.data[0].priceTwo);
-    props.batckedit.forEach((item: any, index: number) => {
-      console.log(item.priceSentime);
-      item.priceSentime = moment(priceEffectiveTime[0]).format("YYYY-MM-DD");
-      item.priceEndtime = moment(priceEffectiveTime[1]).format("YYYY-MM-DD");
-      item.priceOne = priceOne;
-      item.priceTwo = priceTwo;
-      item.priceEffectiveTime = '';
+    let arr = [] as any
+    props.batckedit.forEach((item: any) => {
+      arr.push({
+        id: item.id,
+        priceSentime: moment(priceEffectiveTime[0]).format("YYYY-MM-DD"),
+        priceEndtime: moment(priceEffectiveTime[1]).format("YYYY-MM-DD"),
+        priceOne: priceOne,
+        priceTwo: priceTwo
+      })
     });
-    console.log('批量', props.batckedit);
-    const { data } = await UpdatePriceList(props.batckedit);
+    const { data } = await UpdatePriceList(arr);
     if (data.code === 200) {
       message.success(data.message)
       emit('cencelbtn')
+      arr = []
     } else {
       message.error(data.message)
+      arr = []
     }
   });
 };
