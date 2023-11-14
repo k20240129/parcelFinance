@@ -126,4 +126,10 @@ export default {
 ::v-deep(.n-upload-file-list .n-upload-file.n-upload-file--with-url .n-upload-file-info .n-upload-file-info__name) {
   color: #0256ff !important;
 }
+
+::v-deep(.n-upload-file-list a, .n-upload-file-list img) {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>

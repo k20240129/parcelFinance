@@ -114,7 +114,7 @@ const tableColums = reactive({
       slot: 'priceTwo'
     },
     {
-      minWidth: '380',
+      minWidth: '320',
       prop: 'priceContract',
       label: '价格合同',
       slot: 'priceContract'

@@ -76,11 +76,11 @@
       <KYTable ref="table" style="height: 22vh;" :loading="loading" :colums="tableColums.cl"
         :table-data="tableColums.data" :total="FromSearch.total" :selection="false" :serial-number="false"
         :pagination-show="true" class="current" @page-change="pageChange($event)" @size-change="sizeChange($event)">
-        <template #billAmount="scope">
-          ${{ scope.row.billAmount }}
+        <template #amount="scope">
+          ${{ scope.row.amount }}
         </template>
-        <template #billPrice="scope">
-          ${{ scope.row.billPrice }}
+        <template #price="scope">
+          ${{ scope.row.price }}
         </template>
         <template #billingType="scope">
           <div v-if="scope.row.billingType === 1">包裹店签收费用</div>
@@ -164,20 +164,20 @@ const tableColums = reactive({
     },
     {
       minWidth: '180',
-      prop: 'billWeight',
+      prop: 'weight',
       label: '计费重量/kg',
     },
     {
       minWidth: '180',
-      prop: 'billPrice',
+      prop: 'price',
       label: '单价/USD',
-      slot: 'billPrice'
+      slot: 'price'
     },
     {
       minWidth: '180',
-      prop: 'billAmount',
+      prop: 'amount',
       label: '计费金额/USD',
-      slot: 'billAmount'
+      slot: 'amount'
     },
   ],
   data: []

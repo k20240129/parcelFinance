@@ -10,35 +10,35 @@
       </n-form>
       <n-form ref="formRef" label-width="130" label-placement="left" v-if="switchover" label-align="left">
         <n-form-item label="计费单号：">
-          {{ formData.billCdoe }}
+          {{ model.billCdoe }}
         </n-form-item>
         <n-form-item label="业务单号：">
-          {{ formData.businessNumber }}
+          {{ model.businessNumber }}
         </n-form-item>
         <n-form-item label="计费类型：">
-          <span v-if="formData.billingType === 1">包裹店签收费用</span>
-          <span v-else-if="formData.billingType === 2">包裹店拒收费用</span>
+          <span v-if="model.billingType === 1">包裹店签收费用</span>
+          <span v-else-if="model.billingType === 2">包裹店拒收费用</span>
           <span v-else>--</span>
         </n-form-item>
         <n-form-item label="计费日期：">
-          {{ formData.billTime }}
+          {{ model.billTime }}
         </n-form-item>
         <n-form-item label="计费重量/kg：">
-          {{ formData.billWeight }}
+          {{ model.billWeight }}
         </n-form-item>
         <n-form-item label="单价/USD：">
-          ${{ formData.billPrice }}
+          ${{ model.billPrice }}
         </n-form-item>
         <n-form-item label="计费金额/USD：">
-          ${{ formData.billAmount }}
+          ${{ model.billAmount }}
         </n-form-item>
       </n-form>
       <template #action>
-        <div v-if="!switchover">
+        <div v-show="!switchover">
           <n-button @click="nextstep" type="primary"> 下一步 </n-button>
           <n-button class="M_r_10" @click="cancel"> 取消 </n-button>
         </div>
-        <div v-if="switchover">
+        <div v-show="switchover">
           <n-button type="error" color="#FB4A4C" @click="submitCallback"> 确认 </n-button>
           <n-button class="M_r_10" @click="switchover = false"> 上一步 </n-button>
         </div>
@@ -77,6 +77,7 @@ const switchover = ref(false)
 const formData = reactive({
   businessNumber: '',
 }) as any
+const model = reactive<any>({})
 //点击下一步
 const nextstep = () => {
   formRef.value?.validate(async error => {
@@ -93,7 +94,7 @@ const nextstep = () => {
     });
     console.log(data);
     if (data.code === 200) {
-      Object.assign(formData, toRefs(data.data));
+      Object.assign(model, toRefs(data.data));
       switchover.value = true
       message.success(data.message)
     } else {
@@ -111,7 +112,7 @@ const submitCallback = async () => {
     background: 'rgba(0, 0, 0, 0.7)'
   });
   const { data } = await AddFinancialStatementDetails({
-    ...formData, financialStatementId: Number(props.financialStatementId)
+    ...model, financialStatementId: Number(props.financialStatementId)
   });
   if (data.code === 200) {
     message.success(data.message)
@@ -124,7 +125,8 @@ const submitCallback = async () => {
 };
 watch(() => props.activesty,
   (val) => {
-    formData.billType = val
+    switchover.value = false
+    model.billType = val
   },
   { immediate: true }
 )
