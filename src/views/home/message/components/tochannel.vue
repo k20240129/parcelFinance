@@ -130,8 +130,14 @@ const submitCallback = async () => {
   const { data } = await AddPriceListExcel(updatedArr);
   if (data.code === 200) {
     message.success(data.message)
+    loading.close();
+    cancel()
+  } else if (data?.code) {
+    message.success(data.message)
   } else {
-    message.error(data.message)
+    message.error('出错了，请检查！')
+    loading.close();
+    cancel()
   }
   loading.close();
   cancel()
