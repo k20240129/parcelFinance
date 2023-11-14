@@ -136,6 +136,9 @@ const submitCallback = async () => {
       });
       const { data } = await UpdatePriceList([{
         id: tableColums.data[0].id,
+        currency: 'USD',
+        priceTypeOne: '包裹店签收费用',
+        priceTypeTwo: '包裹店拒收费用',
         priceSentime: moment(tableColums.data[0].priceEffectiveTime[0]).format("YYYY-MM-DD"),
         priceEndtime: moment(tableColums.data[0].priceEffectiveTime[1]).format("YYYY-MM-DD"),
         priceOne: Number(tableColums.data[0].priceOne),

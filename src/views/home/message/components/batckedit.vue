@@ -110,6 +110,9 @@ const submitCallback = async () => {
     let arr = [] as any
     props.batckedit.forEach((item: any) => {
       arr.push({
+        currency: 'USD',
+        priceTypeOne: '包裹店签收费用',
+        priceTypeTwo: '包裹店拒收费用',
         id: item.id,
         priceSentime: moment(priceEffectiveTime[0]).format("YYYY-MM-DD"),
         priceEndtime: moment(priceEffectiveTime[1]).format("YYYY-MM-DD"),
