@@ -4,16 +4,11 @@
       <n-gradient-text type="primary" :size="24">中国传统颜色</n-gradient-text>
     </div>
     <n-tabs>
-      <n-tab-pane v-for="item in traditionColors" :key="item.label" :name="item.label" :tab="item.label">
+      <n-tab-pane v-for="item in comTraditionColors" :key="item.label" :name="item.label" :tab="item.label">
         <n-grid :cols="8" :x-gap="16" :y-gap="8">
           <n-grid-item v-for="i in item.data" :key="i.label">
-            <color-checkbox
-              class="!w-full !h-36px !rounded-4px"
-              :color="i.color"
-              :checked="i.color === theme.themeColor"
-              icon-class="text-20px"
-              @click="theme.setThemeColor(i.color)"
-            />
+            <color-checkbox class="!w-full !h-36px !rounded-4px" :color="i.color" :checked="i.color === theme.themeColor"
+              icon-class="text-20px" @click="theme.setThemeColor(i.color)" />
             <p class="text-center">{{ i.label }}</p>
           </n-grid-item>
         </n-grid>
@@ -26,7 +21,10 @@
 import { traditionColors } from '@/settings';
 import { useThemeStore } from '@/store';
 import ColorCheckbox from './ColorCheckbox.vue';
-
+import { computed } from 'vue';
+const comTraditionColors = computed(() => {
+  return traditionColors
+})
 defineOptions({ name: 'ColorModal' });
 
 interface Props {

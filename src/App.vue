@@ -25,7 +25,9 @@ import kk from 'element-plus/dist/locale/kk.mjs';
 import { useAppStore, subscribeStore, useThemeStore } from '@/store';
 const app = useAppStore();
 import { useGlobalEvents } from '@/composables';
-const theme = useThemeStore();
+const theme = computed(() => {
+  return useThemeStore()
+});
 const lang = computed(() => {
   const obj = {
     0: zhCn,
