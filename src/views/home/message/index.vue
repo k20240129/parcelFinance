@@ -162,7 +162,7 @@ const getTable = async (val?: number) => {
     background: 'rgba(0, 0, 0, 0.7)'
   });
   const { data } = await QueryPriceList({ ...model, ...FromSearch, priceHotel: activeTabs.value });
-  tableColums.data = data.data;
+  tableColums.data = proxy?.$Utils.placeholder(data.data);
   FromSearch.total = data.total;
   loading.close();
 };

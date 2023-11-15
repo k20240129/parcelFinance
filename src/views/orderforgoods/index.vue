@@ -494,7 +494,7 @@ const getTable = async (val?: any) => {
   activeTabs.value = val
   console.log(activeTabs.value);
   const { data } = await QueryCustomerOrderAllList({ ...FromSearch, ...model, goodsStatusList: val });
-  tableColums.data = data.data
+  tableColums.data = proxy?.$Utils.placeholder(data.data);
   FromSearch.total = data.total;
   loading.close();
 };
