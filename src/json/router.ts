@@ -47,4 +47,40 @@ export default [
 			},
 		],
 	},
+	{
+		name: "orderforgoods",
+		path: "/orderforgoods",
+		component: "basic",
+		meta: {
+			title: "订单管理",
+			localIcon: "circum_crop",
+			order: 1,
+		},
+		children: [
+			{
+				name: "orderforgoods",
+				path: "/orderforgoods",
+				component: "self",
+				meta: {
+					title: "小包订单",
+					localIcon: "dot",
+					requiresAuth: true,
+					hide: false,
+					keepAlive: false,
+				},
+			},
+			{
+				name: "orderforgoods_detail",
+				path: "/orderforgoods/detail",
+				component: "self",
+				meta: {
+					title: "订单详情",
+					localIcon: "dot",
+					requiresAuth: true,
+					hide: true,
+					keepAlive: false,
+				},
+			},
+		],
+	},
 ];

@@ -228,3 +228,36 @@ export function QueryFinancial(id: number) {
 		method: "get",
 	});
 }
+
+//中转站拒收列表数据
+export function QueryParcelShopRejectList(data: any) {
+	return mockRequest({
+		url: "/api/ParcelShop/QueryParcelShopRejectList",
+		method: "post",
+		data,
+	});
+}
+// 查询订单路由信息
+export function QueryCustomerOrderRoutingEntities(data: any) {
+	return mockRequest({
+		url: "/api/CustomerOrder/QueryCustomerOrderRoutingEntities",
+		method: "get",
+		params: data,
+	});
+}
+// 查询订单日志信息
+export function QueryCustomerOrderStorageLogsEntities(data: any) {
+	return mockRequest({
+		url: "/api/CustomerOrder/QueryCustomerOrderStorageLogsEntities",
+		method: "get",
+		params: data,
+	});
+}
+// 查询订单详情
+export function QueryCustomerOrderDetail(data: any) {
+	return mockRequest({
+		url: "/api/CustomerOrder/QueryCustomerOrderDetail",
+		method: "get",
+		params: data,
+	});
+}

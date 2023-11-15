@@ -56,7 +56,7 @@ watch(() => props.tablist,
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    padding: 0 12px;
+    padding: 0 10px;
   }
 
 

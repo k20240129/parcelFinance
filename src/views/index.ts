@@ -10,5 +10,7 @@ export const views: Record<RouterPage.LastDegreeRouteKey, RouteComponent | (() =
   'not-found': () => import('./_builtin/not-found/index.vue'),
   home_LadingBillhome: () => import('./home/LadingBillhome/index.vue'),
   home_edit: () => import('./home/edit/index.vue'),
-  home_message: () => import('./home/message/index.vue')
+  home_message: () => import('./home/message/index.vue'),
+  orderforgoods_detail: () => import('./orderforgoods/detail/index.vue'),
+  orderforgoods: () => import('./orderforgoods/index.vue')
 };

@@ -2,12 +2,12 @@
   <div class="content">
     <div class="deflut">
       <!-- <div class="input"> -->
-      <div style="display: flex">
+      <div style="display: flex;margin-bottom: 10px;">
         <slot name="deflutContent"></slot>
         <div v-if="type" class="search">
-          <n-button type="info" style="margin-left: 20px" size="small" @click="getSearch"> 查询 </n-button>
-          <n-button v-if="props.overflowShow" style="margin-left: 10px" type="primary" text icon-placement="right"
-            @click="unfoldToggle">
+          <n-button type="error" color="#FB4A4C" @click="getSearch"> 查询 </n-button>
+          <n-button v-if="props.overflowShow" type="error" color="#FB4A4C" ghost style="margin-left: 12px"
+            icon-placement="right" @click="unfoldToggle">
             <template #icon>
               <n-icon v-if="overflow" size="18" class="unfold-icon">
                 <icon-local-zk class="text-24px" />
@@ -26,9 +26,9 @@
       </div>
     </div>
     <div v-if="!type" class="search">
-      <n-button type="info" style="margin-left: 20px" size="small" @click="getSearch"> 查询 </n-button>
-      <n-button v-if="props.overflowShow" style="margin-left: 10px" type="primary" text icon-placement="right"
-        @click="unfoldToggle">
+      <n-button type="error" color="#FB4A4C" @click="getSearch"> 查询 </n-button>
+      <n-button v-if="props.overflowShow" type="error" color="#FB4A4C" ghost style="margin-left: 12px"
+        icon-placement="right" @click="unfoldToggle">
         <template #icon>
           <n-icon v-if="overflow" size="18" class="unfold-icon">
             <icon-local-zk class="text-24px" />
@@ -83,9 +83,7 @@ const unfoldToggle = () => {
 
   .search {
     display: flex;
-    align-items: center;
-    min-width: 150px;
-    max-height: 35px;
+    width: 20%;
   }
 }
 
