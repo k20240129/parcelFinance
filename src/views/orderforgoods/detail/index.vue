@@ -395,7 +395,7 @@ onMounted(() => {
 });
 // 返回
 const handleBack = () => {
-  router.push('/home/LadingBillhome');
+  router.push('/orderforgoods');
 };
 </script>
 
