@@ -493,8 +493,8 @@ const getTable = async (val?: any) => {
   });
   activeTabs.value = val
   console.log(activeTabs.value);
-  const { data } = await QueryCustomerOrderAllList({ ...FromSearch, ...model, goodsStatusList: val });
-  tableColums.data = data.data
+  const { data } = await QueryCustomerOrderAllList({ ...FromSearch, ...model, goodsStatusList: activeTabs.value });
+  tableColums.data = proxy?.$Utils.placeholder(data.data);
   FromSearch.total = data.total;
   loading.close();
 };
@@ -524,7 +524,7 @@ const inputNoShow = async index => {
       duration: 3000
     });
     is.inputShow = '';
-    getTable();
+    getTable(activeTabs.value);
   } else {
     window.$notification?.error({
       title: '失败',
@@ -587,7 +587,7 @@ const upLoading = async row => {
       content: `${data.message}`,
       duration: 3000
     });
-    getTable();
+    getTable(activeTabs.value);
     loading.close();
   } else {
     row!.customerGoodsCategory = '--';
@@ -610,7 +610,7 @@ const updatValue = async row => {
       content: `${data.message}`,
       duration: 3000
     });
-    getTable();
+    getTable(activeTabs.value);
   } else {
     row!.customerGoodsCategory = '--';
     window.$notification?.error({
@@ -635,7 +635,7 @@ const updatValueIsProhibited = async row => {
       content: `${data.message}`,
       duration: 3000
     });
-    getTable();
+    getTable(activeTabs.value);
   } else {
     row!.customerGoodsCategory = '--';
     window.$notification?.error({
@@ -652,18 +652,18 @@ const updatValueIsProhibited = async row => {
 // 查询
 const getSearch = models => {
   model = { ...models };
-  getTable();
+  getTable(activeTabs.value);
 };
 // 页码调整
 const pageChange = pageIndex => {
   FromSearch.pageIndex = pageIndex.pageIndex;
-  getTable();
+  getTable(activeTabs.value);
 };
 const sizeChange = pageSize => {
   FromSearch.pageSize = pageSize.pageSize;
-  getTable();
+  getTable(activeTabs.value);
 };
-getTable();
+getTable(activeTabs.value);
 </script>
 
 <style scoped lang="scss">

@@ -105,7 +105,6 @@ const tableColums = reactive({
       prop: 'billAmount',
       label: '账单金额',
       slot: 'billAmount',
-      // align: "right"
     },
     {
       minWidth: '180',
