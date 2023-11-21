@@ -235,16 +235,17 @@ let model = reactive({
 const tableColums = reactive({
   cl: [
     {
+      minWidth: '180',
+      prop: 'orderNumber',
+      label: '订单号',
+      slot: 'orderNumber',
+      fixed: 'fixed'
+    },
+    {
       prop: 'customerName',
       minWidth: '180',
       label: '客户名称',
       slot: 'customerName'
-    },
-    {
-      minWidth: '180',
-      prop: 'orderNumber',
-      label: '订单号',
-      slot: 'orderNumber'
     },
     {
       minWidth: '180',

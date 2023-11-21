@@ -144,7 +144,8 @@ const tableColums = reactive({
     {
       minWidth: '180',
       prop: 'billCdoe',
-      label: '计费单号'
+      label: '计费单号',
+      fixed: 'fixed'
     },
     {
       minWidth: '180',

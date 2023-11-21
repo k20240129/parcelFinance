@@ -77,7 +77,8 @@ const tableColums = reactive({
     {
       minWidth: '180',
       prop: 'bilNumber',
-      label: '账单编号'
+      label: '账单编号',
+      fixed: 'fixed'
     },
     {
       minWidth: '180',

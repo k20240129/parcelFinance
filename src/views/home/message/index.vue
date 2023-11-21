@@ -107,7 +107,8 @@ const tableColums = reactive({
     {
       minWidth: '180',
       prop: 'payeeCode',
-      label: '收款方编码'
+      label: '收款方编码',
+      fixed: 'fixed'
     },
     {
       minWidth: '180',
