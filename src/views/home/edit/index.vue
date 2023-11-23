@@ -73,9 +73,9 @@
           + 新增一行
         </n-button>
       </div>
-      <KYTable ref="table" style="height: 22vh;" :loading="loading" :colums="tableColums.cl"
-        :table-data="tableColums.data" :total="FromSearch.total" :selection="false" :serial-number="false"
-        :pagination-show="true" class="current" @page-change="pageChange($event)" @size-change="sizeChange($event)">
+      <KYTable ref="table" style="height: 420px;" :colums="tableColums.cl" :table-data="tableColums.data"
+        :total="FromSearch.total" :selection="false" :serial-number="false" :pagination-show="true" class="current"
+        @page-change="pageChange($event)" @size-change="sizeChange($event)">
         <template #amount="scope">
           ${{ scope.row.amount }}
         </template>
@@ -127,7 +127,6 @@ const showModal = ref(false);
 const activesty = ref(1)
 const model = ref({}) as any
 const bill = ref({}) as any
-const loading = ref(false)
 const proxy = getCurrentInstance()?.proxy as any;
 const FromSearch = reactive({
   pageSize: 10,
