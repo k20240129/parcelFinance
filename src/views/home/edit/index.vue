@@ -181,7 +181,7 @@ const tableColums = reactive({
       slot: 'amount'
     },
   ],
-  data: []
+  data: [] as any
 });
 
 //基础信息
@@ -367,6 +367,7 @@ getTable();
 .postionab {
   position: relative;
   top: -24px;
+  display: inline;
 }
 
 .btntijiao {
