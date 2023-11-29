@@ -18,7 +18,7 @@ export default [
 					localIcon: "dot",
 					requiresAuth: true,
 					hide: false,
-					keepAlive: false,
+					keepAlive: true,
 				},
 			},
 			{
@@ -42,7 +42,7 @@ export default [
 					localIcon: "dot",
 					requiresAuth: false,
 					hide: false,
-					keepAlive: false,
+					keepAlive: true,
 				},
 			},
 		],
@@ -66,7 +66,7 @@ export default [
 					localIcon: "dot",
 					requiresAuth: true,
 					hide: false,
-					keepAlive: false,
+					keepAlive: true,
 				},
 			},
 			{
